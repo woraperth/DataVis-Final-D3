@@ -1,0 +1,23 @@
+{
+  "name": "final",
+  "version": "1.0.0",
+  "description": "Data Visualization project at Monash University with D3.js and Melbourne City Data. Using Static Site Generator.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woraperth/DataVis-Final-D3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woraperth/DataVis-Final-D3/issues"
+  },
+  "homepage": "https://github.com/woraperth/DataVis-Final-D3#readme",
+  "dependencies": {
+    "browserify": "^14.3.0",
+    "d3": "^4.9.1"
+  }
+}

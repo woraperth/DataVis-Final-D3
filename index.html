@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"/>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v0.35.1/mapbox-gl.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
+</head>
+<body>
+  <div class="openframe">
+    <div class="section">
+      <div class="container content">
+        <div class="columns">
+          <div class="column">
+            <div id="viz"></div>
+            <h1>Where should I work in Melbourne</h1>
+            <p>Which industry whould you like to work with ?</p>
+            <ul class="open-indus">
+              <li><a href="#">Accomodation</a></li>
+              <li><a href="#">Admin &amp; Support Services</a></li>
+              <li><a href="#">Agriculture &amp; Mining</a></li>
+              <li><a href="#">Arts &amp; Recreation Services</a></li>
+              <li><a href="#">Business Services</a></li>
+              <li><a href="#">Construction</a></li>
+              <li><a href="#">Education &amp; Training</a></li>
+              <li><a href="#">Electricity, Gas, Water, &amp; Waste Services</a></li>
+              <li><a href="#">Food &amp; Beverage Services</a></li>
+              <li><a href="#">Health Care &amp; Social Assistance</a></li>
+              <li><a href="#">Information Media &amp; Telecommunications</a></li>
+              <li><a href="#">Public Administration &amp; Safety</a></li>
+              <li><a href="#">Real Estate Services</a></li>
+              <li><a href="#">Rental &amp; Hiring Services</a></li>
+              <li><a href="#">Retail Trade</a></li>
+              <li><a href="#">Transport, Postal &amp; Storage</a></li>
+              <li><a href="#">Wholesale Trade</a></li>
+              <li><a href="#">Other Services</a></li>
+            </ul>
+            <div class="open-topplace">
+              <p>We found Top 3 places you should work at:</p>
+              <div id="app" v-cloak="v-cloak">{{ message }}</div>
+              <div class="columns">
+                <div class="column">
+                  <div class="open-top-3">
+                    <div class="columns">
+                      <div class="column is-8">1. <span class="open-topplace-1">South Yarra</span></div>
+                      <div class="column is-4"><a href="#" class="button is-primary">Explore</a></div>
+                    </div>
+                    <div class="columns">
+                      <div class="column is-8">2.<span class="open-topplace-2">Docklands</span></div>
+                      <div class="column is-4"><a href="#" class="button is-primary">Explore</a></div>
+                    </div>
+                    <div class="columns">
+                      <div class="column is-8">3. Carlton</div>
+                      <div class="column is-4"><a href="#" class="button is-primary">Explore</a></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div id="mapid"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app-dist.js"></script>
+</body>

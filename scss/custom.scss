@@ -1,0 +1,40 @@
+#viz {
+    width: 100%;
+    height: 300px;
+}
+
+// Open Frame
+#mapid {
+    width: 100%;
+    height: 300px;
+}
+
+.leaflet-popup {
+    pointer-events: none;
+}
+
+.open-indus {
+    li {
+        display: inline-block;
+    }
+
+    a {
+        display: block;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        margin: 3px;
+    }
+}
+
+.open-topplace-1 {
+    font-size: 1.8em;
+}
+
+.open-topplace-2 {
+    font-size: 1.4em;
+}
+
+[v-cloak] {
+  display: none;
+}
