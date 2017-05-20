@@ -1,3 +1,7 @@
+// WARNING: Don't use svg { width: 100%; }
+// to style D3 SVG.
+// Because it will affect leaftlet as well !
+
 // Step 1 Choropleth
 #choro {
     width: 100%;
@@ -9,6 +13,10 @@
 }
 
 // Step 1 Stack Bar
+#step1stack {
+    width: 100%;
+}
+
 .xaxeStack path,
 .xaxeStack line,
 .yaxeStack path,
@@ -33,7 +41,38 @@
     stroke-width: 1px;
 }
 
-#viz {
+.xaxeStack line {
+    stroke: transparent;
+}
+
+.grid line {
+    stroke: #CCCCCC;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+
+.grid path {
+    stroke-width: 0;
+    fill: transparent;
+}
+
+
+// Step 2 Tree
+#step2tree {
     width: 100%;
-    height: 300px;
+    height: 500px;
+}
+
+
+// Step 3 Bar
+#step3bar {
+    width: 100%;
+    height: 500px;
+}
+
+
+// Step 4 Line
+#step4line {
+    width: 100%;
+    height: 500px;
 }

@@ -1,100 +1,76 @@
-// var width = 300;
-// var height = 300;
-
-// var svg = d3.select("body").append("svg")
-
-// var projection = d3.geoMercator()
-// //   .scale(width / 2 / Math.PI)
-//     .scale(50000)
-//     .center([144.901, -37.8052])
-//     .translate([100, 100]);
-
-// var path = d3.geoPath()
-//     .projection(projection);
-
-// d3.json("data/smallarea.geojson", function(err, geojson) {
-//     var features = geojson.features;
-
-//     svg.selectAll("path")
-//         .data(features)
-//         .enter().append('path')
-//         .attr('d', path)
-//         .on('mouseover', mapMouseOver)      
-// })
-
-// var data = [
-//     {"year": 1991, "name":"alpha", "value": 15},
-//     {"year": 1991, "name":"beta", "value": 10},
-//     {"year": 1991, "name":"gamma", "value": 5},
-//     {"year": 1991, "name":"delta", "value": 50},
-//     {"year": 1992, "name":"alpha", "value": 20},
-//     {"year": 1992, "name":"beta", "value": 10},
-//     {"year": 1992, "name":"gamma", "value": 10},
-//     {"year": 1992, "name":"delta", "value": 43},
-//     {"year": 1993, "name":"alpha", "value": 30},
-//     {"year": 1993, "name":"beta", "value": 40},
-//     {"year": 1993, "name":"gamma", "value": 20},
-//     {"year": 1993, "name":"delta", "value": 17},
-//     {"year": 1994, "name":"alpha", "value": 60},
-//     {"year": 1994, "name":"beta", "value": 60},
-//     {"year": 1994, "name":"gamma", "value": 25},
-//     {"year": 1994, "name":"delta", "value": 32}
-// ]
-// var visualization = d3plus.viz()
-//     .container("#viz")
-//     .data(data)
-//     .type("bar")
-//     .id("name")
-//     .x("year")
-//     .y("value")
-//     .draw()
-
-
-// sample data array
-var sample_data = [
-  {"value": 100, "name": "alpha", "group": "group 1"},
-  {"value": 70, "name": "beta", "group": "group 1"},
-  {"value": 40, "name": "gamma", "group": "group 1"},
-  {"value": 15, "name": "delta", "group": "group 1"},
-  {"value": 5, "name": "epsilon", "group": "group 1"},
-  {"value": 1, "name": "zeta", "group": "group 1"}
-]
-// instantiate d3plus
-var visualization = d3plus.viz()
-  .container("#viz")     // container DIV to hold the visualization
-  .data(sample_data)     // data to use with the visualization
-  .type("bubbles")       // visualization type
-  .id(["group", "name"]) // nesting keys
-  .depth(1)              // 0-based depth
-  .size("value")         // key name to size bubbles
-  .color("name")        // color by each group
-  .legend(false)
-  .mouse({
-      'click': function(x) {
-          console.log(x.name)
-      }
-  })
-  .draw()                // finally, draw the visualization!
-
-
-
-
-
+// sample data (for step 1)
 var stackdata = [
-  {"year": 1991, "name":"West Melb (Indus)", "value": 15, "value2": 15},
-  {"year": 1991, "name":"South Yarra", "value": 80, "value2": 15},
-  {"year": 1991, "name":"West Melb (Res)", "value": 5, "value2": 15},
-  {"year": 1991, "name":"Southbank", "value": 50, "value2": 15},
-  {"year": 1992, "name":"Melb CBD", "value": 20, "value2": 15},
-  {"year": 1992, "name":"East Melbourne", "value": 10, "value2": 15},
-  {"year": 1992, "name":"North Melbourne", "value": 10, "value2": 15},
-  {"year": 1992, "name":"Docklands", "value": 43, "value2": 15},
-  {"year": 1993, "name":"Port Melbourne", "value": 30, "value2": 15},
-  {"year": 1993, "name":"East Melbourne 2", "value": 40, "value2": 15},
-  {"year": 1993, "name":"West Melb (Indus) 2", "value": 20, "value2": 15},
-  {"year": 1993, "name":"West Melb (Res) 2", "value": 17, "value2": 15},
-  {"year": 1994, "name":"South Yarra 2", "value": 60, "value2": 15},
+    {"year": 1991, "name":"West Melb (Indus)", "value": 15, "value2": 15},
+    {"year": 1991, "name":"South Yarra", "value": 80, "value2": 15},
+    {"year": 1991, "name":"West Melb (Res)", "value": 5, "value2": 15},
+    {"year": 1991, "name":"Southbank", "value": 50, "value2": 15},
+    {"year": 1992, "name":"Melb CBD", "value": 20, "value2": 15},
+    {"year": 1992, "name":"East Melbourne", "value": 10, "value2": 15},
+    {"year": 1992, "name":"North Melbourne", "value": 10, "value2": 15},
+    {"year": 1992, "name":"Docklands", "value": 43, "value2": 15},
+    {"year": 1993, "name":"Port Melbourne", "value": 30, "value2": 15},
+    {"year": 1993, "name":"East Melbourne 2", "value": 40, "value2": 15},
+    {"year": 1993, "name":"West Melb (Indus) 2", "value": 20, "value2": 15},
+    {"year": 1993, "name":"West Melb (Res) 2", "value": 17, "value2": 15},
+    {"year": "Food and Beverage Services", "name":"South Yarra 2", "value": 60, "value2": 15},
 ]
+
+// sample data array (for step 2)
+var treeData = [
+    {"value": 100, "name": "Employment", "group": "Finance and Insurance"},
+    {"value": 70, "name": "Employment", "group": "Accommodation"},
+    {"value": 40, "name": "Business", "group": "Accommodation"},
+    {"value": 15, "name": "Employment", "group": "Information Media and Telecommunications"},
+    {"value": 50, "name": "Business", "group": "Information Media and Telecommunications"},
+    {"value": 60, "name": "Business", "group": "Food and Beverage Services"}
+]
+
+// sample data (for step 3)
+var step3data = [
+  {"year": "Finance and Insurance", "name":"Employment", "value": 15},
+  {"year": "Finance and Insurance", "name":"Graduated", "value": 10},
+  {"year": "Education and Training", "name":"Employment", "value": 5},
+  {"year": "Education and Training", "name":"Graduated", "value": 50},
+  {"year": "Accommodation", "name":"Employment", "value": 20},
+  {"year": "Accommodation", "name":"Graduated", "value": 10},
+  {"year": "Health Care and Social Assistance", "name":"Employment", "value": 10},
+  {"year": "Health Care and Social Assistance", "name":"Graduated", "value": 43},
+  {"year": "Information Media and Telecommunications", "name":"Employment", "value": 30},
+  {"year": "Information Media and Telecommunications", "name":"Graduated", "value": 40},
+  {"year": "Public Administration and Safety", "name":"Employment", "value": 20},
+  {"year": "Public Administration and Safety", "name":"Graduated", "value": 17},
+  {"year": "Food and Beverage Services", "name":"Employment", "value": 60},
+  {"year": "Food and Beverage Services", "name":"Graduated", "value": 60},
+  {"year": "Real Estate Services", "name":"Employment", "value": 25},
+  {"year": "Real Estate Services", "name":"Graduated", "value": 32}
+]
+
+// sample data (for step 4)
+var step4data = [
+    {"year": 1991, "name":"KFC", "value": 17},
+    {"year": 1992, "name":"KFC", "value": 20},
+    {"year": 1993, "name":"KFC", "value": 25},
+    {"year": 1994, "name":"KFC", "value": 33},
+    {"year": 1995, "name":"KFC", "value": 52},
+    {"year": 1991, "name":"7-Eleven", "value": 36},
+    {"year": 1992, "name":"7-Eleven", "value": 32},
+    {"year": 1993, "name":"7-Eleven", "value": 40},
+    {"year": 1994, "name":"7-Eleven", "value": 58},
+    {"year": 1995, "name":"7-Eleven", "value": 13},
+    {"year": 1991, "name":"Wilson Parking", "value": 24},
+    {"year": 1992, "name":"Wilson Parking", "value": 27},
+    {"year": 1993, "name":"Wilson Parking", "value": 27},
+    {"year": 1994, "name":"Wilson Parking", "value": 35},
+    {"year": 1995, "name":"Wilson Parking", "value": 40}
+  ]
+
+
+
+
+
+/*
+* STEP 1
+*/
 
 function createStackbar() {
     var wStack = d3.select('#step1stack').node().getBoundingClientRect().width;
@@ -122,6 +98,74 @@ function createStackbar() {
 
     var barWidth = ((wStack - leftStack) / stackdata.length) - padStack;
 
+    // Add axis
+    var xScale = d3.scale.ordinal()
+        .domain( d3.map(stackdata, function(d){return d.name;}).keys() )
+        .rangePoints([0, wStack - leftStack - barWidth]);
+
+    var yScale = d3.scale.linear()
+        .domain([0, d3.max(stackdata, function(d) { return d.value + d.value2; }) ])
+        .range([hStack, botStack]);
+
+    var xAxis = d3.svg.axis()
+        .orient("bottom")
+        .scale(xScale);
+
+    var yAxis = d3.svg.axis()
+        .orient("left")
+        .scale(yScale);
+
+    var xAxisG = d3.svg.axis()
+        .orient("bottom")
+        .scale(xScale);
+
+    var yAxisG = d3.svg.axis()
+        .orient("left")
+        .scale(yScale);
+
+    // Draw background grid
+    svg.append("rect")
+        .attr("class", "gridbg")
+        .attr("fill", "#FAFAFA")
+        .attr("width", wStack - leftStack)
+        .attr("height", hStack - botStack)
+        .attr("transform", "translate(" + (leftStack - 5) + "," + (0) + ")")
+
+    // add the X gridlines
+    svg.append("g")			
+        .attr("class", "grid")
+        .attr("transform", "translate(" + (leftStack + barWidth) + "," + (hStack - botStack) + ")")
+        .call(xAxisG
+            .tickSize(-hStack)
+            .tickFormat("")
+        )
+
+    // add the Y gridlines
+    svg.append("g")			
+        .attr("class", "grid")
+        .attr("transform", "translate(" + (leftStack) + "," + (-botStack) + ")")
+        .call(yAxisG
+            .tickSize(-wStack)
+            .tickFormat("")
+        )
+
+    svg.append("g")
+        .attr("class", "xaxeStack")   // give it a class so it can be used to select only xaxis labels  below
+        .attr("transform", "translate(" + (leftStack + barWidth/2 ) + "," + (hStack - botStack + 5) + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "yaxeStack")
+        .attr("transform", "translate(" + (leftStack - 5) + "," + -botStack + ")")
+        .call(yAxis);
+
+    // Style the axis
+    svg.selectAll(".xaxeStack text")  // select all the text elements for the xaxis
+        .attr("transform", function(d) {
+            return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
+        });
+
+    // Draw Graph
     empbar.enter()
         .append("rect")
         .attr("x", function(d, i) { return i * ((wStack - leftStack) / stackdata.length) + leftStack; })
@@ -144,40 +188,11 @@ function createStackbar() {
             .attr("y", function(d, i) { return hStack - l_converter(d.value) - l_converter(d.value2) - botStack })
             .attr("height", function(d, i) { return l_converter(d.value2) } )
 
-    // Add axis
-    var xScale = d3.scale.ordinal()
-        .domain( d3.map(stackdata, function(d){return d.name;}).keys() )
-        .rangePoints([0, wStack - leftStack - barWidth]);
-
-    console.log(d3.max(stackdata, function(d) { return d.value + d.value2; }))
-
-    var yScale = d3.scale.linear()
-        .domain([0, d3.max(stackdata, function(d) { return d.value + d.value2; }) ])
-        .range([hStack, botStack]);
-
-    var xAxis = d3.svg.axis()
-        .orient("bottom")
-        .scale(xScale);
-
-    var yAxis = d3.svg.axis()
-        .orient("left")
-        .scale(yScale);
-
-    svg.append("g")
-        .attr("class", "xaxeStack")   // give it a class so it can be used to select only xaxis labels  below
-        .attr("transform", "translate(" + (leftStack + barWidth/2 ) + "," + (hStack - botStack + 5) + ")")
-        .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "yaxeStack")
-        .attr("transform", "translate(" + (leftStack - 5) + "," + -botStack + ")")
-        .call(yAxis);
-
-    // Style the axis
-    svg.selectAll(".xaxeStack text")  // select all the text elements for the xaxis
-        .attr("transform", function(d) {
-            return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
-        });
+    // Add Axis Label
+    svg.append("text")
+        .attr("transform", "translate(30, 120) rotate(-90)")
+        .attr('font-size', '12px')
+        .text("Count")
     
     // Add Legend
     var legendList = [
@@ -214,30 +229,6 @@ function createStackbar() {
 
 // End function createStackbar
 }
-
-
-
-// var sample_data = [
-//   {"value": 100, "name": "alpha", "group": "group 1"},
-//   {"value": 70, "name": "beta", "group": "group 2"},
-//   {"value": 40, "name": "gamma", "group": "group 2"},
-//   {"value": 15, "name": "delta", "group": "group 2"},
-//   {"value": 5, "name": "epsilon", "group": "group 1"},
-//   {"value": 1, "name": "zeta", "group": "group 1"}
-// ]
-// var visualization = d3plus.viz()
-//   .container("#viz")
-//   .data(sample_data)
-//   .type("tree_map")
-//   .id(["group","name"])
-//   .size("value")
-//   .draw()
-
-
-
-
-
-
 
 // Leaflet Map
 var layer, geojson;
@@ -286,11 +277,11 @@ function openmapMouseOver(e) {
     layer = e.target;
 
     layer.setStyle({
-        fillColor: '#00D1B2',
+        fillColor: '#BB3C1C',
         weight: 0,
         color: 'white',
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 1
     });
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -305,7 +296,7 @@ function openmapMouseOver(e) {
     d3.select(".xaxeStack text")
         .attr('fill', 'black');
     d3.select(".xaxeStack g:nth-child(3) text")
-        .attr('fill', '#00D1B2');
+        .attr('fill', '#BB3C1C');
 }
 
 // Mouse Out
@@ -320,6 +311,95 @@ function openmapMouseOut(e) {
 
 
 
+
+
+
+
+/*
+* STEP 2
+*
+*/
+function createTreeMap() {
+
+    var visualization = d3plus.viz()
+        .container("#step2tree")
+        .data(treeData)
+        .type("tree_map")
+        .id(["group","name"])
+        .size("value")
+        .labels({"align": "left", "valign": "top"})
+        .font({ "family": "system-ui", "size": 10 })
+        .draw()
+
+}
+
+
+
+
+
+
+/*
+* STEP 3
+*
+*/
+function createCompBar() {
+
+    var attributes = [
+        {"name": "Employment", "hex": "#CCC"},
+        {"name": "Graduated", "hex": "#C00"}
+    ]
+
+    var visualization = d3plus.viz()
+    .container("#step3bar")
+    .data(step3data)
+    .type("bar")
+    .id("name")
+    .x("value")
+    .y({"scale": "discrete", "value":"year"})
+    .font({"size": 16, "weight": 400})
+    .legend({ "filters": true, "size": 100})
+    .attrs(attributes)
+    .color("hex")
+    .order({"sort":"desc", "value": "value"})
+    .draw()
+
+}
+
+
+
+
+
+
+
+/*
+* STEP 4
+*
+*/
+function createLinePlot() {
+    
+    var visualization = d3plus.viz()
+        .container("#step4line")  // container DIV to hold the visualization
+        .data(step4data)  // data to use with the visualization
+        .type("line")       // visualization type
+        .id("name")         // key for which our data is unique on
+        .text("name")       // key to use for display text
+        .y("value")         // key to use for y-axis
+        .x("year")          // key to use for x-axis
+        .font({"size": 16, "weight": 400})
+        .legend({ "size": 100})
+        .draw()             // finally, draw the visualization!
+
+}
+
+
+
 // Start map
+// Step 1
 createChoroMap();
 createStackbar();
+// Step 2
+createTreeMap();
+// Step 3
+createCompBar();
+// Step 4
+createLinePlot();
