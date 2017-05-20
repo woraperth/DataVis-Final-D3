@@ -49,23 +49,137 @@
 //     .y("value")
 //     .draw()
 
+// sample data array
 "use strict";
 
-var sample_data = [{ "value": 100, "name": "alpha", "group": "group 1" }, { "value": 70, "name": "beta", "group": "group 2" }, { "value": 40, "name": "gamma", "group": "group 2" }, { "value": 15, "name": "delta", "group": "group 2" }, { "value": 5, "name": "epsilon", "group": "group 1" }, { "value": 1, "name": "zeta", "group": "group 1" }];
-var visualization = d3plus.viz().container("#viz").data(sample_data).type("tree_map").id(["group", "name"]).size("value").draw();
+var sample_data = [{ "value": 100, "name": "alpha", "group": "group 1" }, { "value": 70, "name": "beta", "group": "group 1" }, { "value": 40, "name": "gamma", "group": "group 1" }, { "value": 15, "name": "delta", "group": "group 1" }, { "value": 5, "name": "epsilon", "group": "group 1" }, { "value": 1, "name": "zeta", "group": "group 1" }];
+// instantiate d3plus
+var visualization = d3plus.viz().container("#viz") // container DIV to hold the visualization
+.data(sample_data) // data to use with the visualization
+.type("bubbles") // visualization type
+.id(["group", "name"]) // nesting keys
+.depth(1) // 0-based depth
+.size("value") // key name to size bubbles
+.color("name") // color by each group
+.legend(false).mouse({
+    "click": function click(x) {
+        console.log(x.name);
+    }
+}).draw(); // finally, draw the visualization!
+
+var stackdata = [{ "year": 1991, "name": "West Melb (Indus)", "value": 15, "value2": 15 }, { "year": 1991, "name": "South Yarra", "value": 80, "value2": 15 }, { "year": 1991, "name": "West Melb (Res)", "value": 5, "value2": 15 }, { "year": 1991, "name": "Southbank", "value": 50, "value2": 15 }, { "year": 1992, "name": "Melb CBD", "value": 20, "value2": 15 }, { "year": 1992, "name": "East Melbourne", "value": 10, "value2": 15 }, { "year": 1992, "name": "North Melbourne", "value": 10, "value2": 15 }, { "year": 1992, "name": "Docklands", "value": 43, "value2": 15 }, { "year": 1993, "name": "Port Melbourne", "value": 30, "value2": 15 }, { "year": 1993, "name": "East Melbourne 2", "value": 40, "value2": 15 }, { "year": 1993, "name": "West Melb (Indus) 2", "value": 20, "value2": 15 }, { "year": 1993, "name": "West Melb (Res) 2", "value": 17, "value2": 15 }, { "year": 1994, "name": "South Yarra 2", "value": 60, "value2": 15 }];
+
+function createStackbar() {
+    var wStack = d3.select("#step1stack").node().getBoundingClientRect().width;
+    var hStack = 300;
+
+    var svg = d3.select("#step1stack").append("svg").attr("width", wStack).attr("height", hStack);
+
+    var padStack = 2;
+    var botStack = 100;
+    var leftStack = 80;
+
+    // Add stacked bar chart
+    var l_converter = d3.scale.linear().domain([0, 100]).range([0, hStack - botStack]);
+
+    var estbar = svg.selectAll("rect").data(stackdata);
+
+    var empbar = svg.selectAll("rect").data(stackdata);
+
+    var barWidth = (wStack - leftStack) / stackdata.length - padStack;
+
+    empbar.enter().append("rect").attr("x", function (d, i) {
+        return i * ((wStack - leftStack) / stackdata.length) + leftStack;
+    }).attr("y", hStack - botStack).attr("width", barWidth).attr("height", 0).attr("fill", "gray").transition().duration(1000).attr("y", function (d, i) {
+        return hStack - l_converter(d.value) - botStack;
+    }).attr("height", function (d, i) {
+        return l_converter(d.value);
+    });
+
+    estbar.enter().append("rect").attr("x", function (d, i) {
+        return i * ((wStack - leftStack) / stackdata.length) + leftStack;
+    }).attr("y", function (d, i) {
+        return hStack - l_converter(d.value) - botStack;
+    }).attr("width", barWidth).attr("height", 0).attr("fill", "red").transition().duration(500).delay(1000).attr("y", function (d, i) {
+        return hStack - l_converter(d.value) - l_converter(d.value2) - botStack;
+    }).attr("height", function (d, i) {
+        return l_converter(d.value2);
+    });
+
+    // Add axis
+    var xScale = d3.scale.ordinal().domain(d3.map(stackdata, function (d) {
+        return d.name;
+    }).keys()).rangePoints([0, wStack - leftStack - barWidth]);
+
+    console.log(d3.max(stackdata, function (d) {
+        return d.value + d.value2;
+    }));
+
+    var yScale = d3.scale.linear().domain([0, d3.max(stackdata, function (d) {
+        return d.value + d.value2;
+    })]).range([hStack, botStack]);
+
+    var xAxis = d3.svg.axis().orient("bottom").scale(xScale);
+
+    var yAxis = d3.svg.axis().orient("left").scale(yScale);
+
+    svg.append("g").attr("class", "xaxeStack") // give it a class so it can be used to select only xaxis labels  below
+    .attr("transform", "translate(" + (leftStack + barWidth / 2) + "," + (hStack - botStack + 5) + ")").call(xAxis);
+
+    svg.append("g").attr("class", "yaxeStack").attr("transform", "translate(" + (leftStack - 5) + "," + -botStack + ")").call(yAxis);
+
+    // Style the axis
+    svg.selectAll(".xaxeStack text") // select all the text elements for the xaxis
+    .attr("transform", function (d) {
+        return "translate(" + this.getBBox().height * -2 + "," + this.getBBox().height + ")rotate(-45)";
+    });
+
+    // Add Legend
+    var legendList = [{ "name": "Employment", "color": "grey" }, { "name": "Business", "color": "red" }];
+
+    svg.append("g").attr("class", "legendOrdinal").attr("transform", "translate(" + (wStack - 200) + ",0)");
+
+    svg.select(".legendOrdinal").call(function (thisele) {
+        thisele.selectAll("rect").data(legendList).enter().append("rect").attr("width", 10).attr("height", 10).attr("x", 0).attr("y", function (d, i) {
+            return i * 15;
+        }).attr("fill", function (d, i) {
+            return d.color;
+        });
+
+        thisele.selectAll("text").data(legendList).enter().append("text").text(function (d, i) {
+            return d.name;
+        }).attr("x", 15).attr("y", function (d, i) {
+            return i * 15 + 8;
+        }).attr("font-size", "10px");
+    });
+
+    // End function createStackbar
+}
+
+// var sample_data = [
+//   {"value": 100, "name": "alpha", "group": "group 1"},
+//   {"value": 70, "name": "beta", "group": "group 2"},
+//   {"value": 40, "name": "gamma", "group": "group 2"},
+//   {"value": 15, "name": "delta", "group": "group 2"},
+//   {"value": 5, "name": "epsilon", "group": "group 1"},
+//   {"value": 1, "name": "zeta", "group": "group 1"}
+// ]
+// var visualization = d3plus.viz()
+//   .container("#viz")
+//   .data(sample_data)
+//   .type("tree_map")
+//   .id(["group","name"])
+//   .size("value")
+//   .draw()
 
 // Leaflet Map
 var layer, geojson;
-function createOpenMap() {
-    var openmap = L.map("mapid", {
-        zoomControl: false,
+function createChoroMap() {
+    var openmap = L.map("choro", {
         doubleClickZoom: false
-    }).setView([-37.8154, 144.9437], 12);
+    }).setView([-37.8154, 144.9437], 11.5);
 
-    // L.tileLayer('http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
     L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
-        // L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-        // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoid29yYXRhbmEiLCJhIjoiY2oxcHhvc2l5MDA0aTJ3bnR1emtudzdpZyJ9.dS_4_26aDa1ZiKtL4yIaWA', {
         attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>",
         maxZoom: 18
     }).addTo(openmap);
@@ -80,19 +194,13 @@ function openmapOnEach(feature, layer) {
     layer.bindPopup(feature.properties.featurenam, { closeButton: true, offset: L.point(0, 0) });
     layer.on({
         mouseover: openmapMouseOver,
-        mouseout: openmapMouseOut,
-        click: openmapClick
+        mouseout: openmapMouseOut
     });
 }
 
 // Show highlighted color if it is the top 3 places
 function getColor(featurename) {
-    var open_toparea = ["South Yarra", "North Melbourne", "Docklands"];
-    if (open_toparea.includes(featurename)) {
-        return "#00D1B2";
-    } else {
-        return "#666";
-    }
+    return "#666";
 }
 
 function openmapStyle(feature) {
@@ -109,7 +217,7 @@ function openmapMouseOver(e) {
     layer = e.target;
 
     layer.setStyle({
-        fillColor: "white",
+        fillColor: "#00D1B2",
         weight: 0,
         color: "white",
         dashArray: "",
@@ -122,6 +230,11 @@ function openmapMouseOver(e) {
 
     // Open Popup
     layer.openPopup();
+
+    // Highlight Stack Bar Chart
+    // - TODO: Change 3 to the right number
+    d3.select(".xaxeStack text").attr("fill", "black");
+    d3.select(".xaxeStack g:nth-child(3) text").attr("fill", "#00D1B2");
 }
 
 // Mouse Out
@@ -132,19 +245,6 @@ function openmapMouseOut(e) {
     layer.closePopup();
 }
 
-// Click
-function openmapClick(e) {
-    layer = e.target;
-    console.log(layer.feature.properties.featurenam);
-}
-
 // Start map
-createOpenMap();
-
-// Test Vue
-var app = new Vue({
-    el: "#app",
-    data: {
-        message: "Hello Vue!"
-    }
-});
+createChoroMap();
+createStackbar();
