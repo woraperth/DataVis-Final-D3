@@ -11,7 +11,7 @@ head
     link(rel="stylesheet", href="https://api.mapbox.com/mapbox-gl-js/v0.35.1/mapbox-gl.css")
     link(rel="stylesheet", href="css/custom.css")
 body
-    .section.hero.is-dark
+    .section.hero.is-dark.is-bold
       .container
         .content
           h1.title Job Market in Melbourne
@@ -43,6 +43,17 @@ body
         .content
           h2 3. Number of jobs available VS Graduated students
           #step3bar
+          
+    .section
+      .container
+        .content
+          .columns
+            .column
+              h3 Industry with more graduates than employments
+              #step3empmore
+            .column
+              h3 Industry with more employments than graduates
+              #step3gradmore
     
     .section
       .container
@@ -50,13 +61,13 @@ body
           h2 4. The biggest companies you can rely on:
           .columns
             .column.is-5
-              p The top companies that are biggest in Melbourne are:
+              p The top companies that own the most buildings are:
               ol.topcomp-list
                 li 7-Eleven
                 li RMIT
-                li KFC
-                li Parking
-                li McDonald
+                li Subway
+                li Telstra
+                li Wilson Parking
             .column.is-7
               #step4line
 
@@ -88,78 +99,6 @@ body
             a.icon(href='https://github.com/jgthms/bulma')
               i.fa.fa-github
 
-              
-
-
-
-      //- #viz
-      //- h1 Where should I work in Melbourne
-      //- p Which industry whould you like to work with ?
-      //- ul.open-indus
-      //-   li
-      //-     a(href="#") Accomodation
-      //-   li
-      //-     a(href="#") Admin &amp; Support Services
-      //-   li
-      //-     a(href="#") Agriculture &amp; Mining
-      //-   li
-      //-     a(href="#") Arts &amp; Recreation Services
-      //-   li
-      //-     a(href="#") Business Services
-      //-   li
-      //-     a(href="#") Construction
-      //-   li
-      //-     a(href="#") Education &amp; Training
-      //-   li
-      //-     a(href="#") Electricity, Gas, Water, &amp; Waste Services
-      //-   li
-      //-     a(href="#") Food &amp; Beverage Services
-      //-   li
-      //-     a(href="#") Health Care &amp; Social Assistance
-      //-   li
-      //-     a(href="#") Information Media &amp; Telecommunications
-      //-   li
-      //-     a(href="#") Public Administration &amp; Safety
-      //-   li
-      //-     a(href="#") Real Estate Services
-      //-   li
-      //-     a(href="#") Rental &amp; Hiring Services
-      //-   li
-      //-     a(href="#") Retail Trade
-      //-   li
-      //-     a(href="#") Transport, Postal &amp; Storage
-      //-   li
-      //-     a(href="#") Wholesale Trade
-      //-   li
-      //-     a(href="#") Other Services
-      //- .open-topplace
-      //-   p We found Top 3 places you should work at:
-      //-   div#app(v-cloak)
-      //-     {{ message }}
-      //-   .columns
-      //-     .column
-      //-       .open-top-3
-      //-         .columns
-      //-           .column.is-8
-      //-             | 1. 
-      //-             span.open-topplace-1 South Yarra
-      //-           .column.is-4
-      //-             a.button.is-primary(href="#") Explore
-      //-         .columns
-      //-           .column.is-8
-      //-             | 2.
-      //-             span.open-topplace-2 Docklands
-      //-           .column.is-4
-      //-             a.button.is-primary(href="#") Explore
-      //-         .columns
-      //-           .column.is-8
-      //-             | 3. Carlton
-      //-           .column.is-4
-      //-             a.button.is-primary(href="#") Explore
-      //-     .column
-      //-       #mapid
-
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.min.js")

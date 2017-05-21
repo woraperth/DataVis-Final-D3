@@ -1,72 +1,3 @@
-// sample data (for step 1)
-var stackdata = [
-    {"year": 1991, "name":"West Melb (Indus)", "value": 15, "value2": 15},
-    {"year": 1991, "name":"South Yarra", "value": 80, "value2": 15},
-    {"year": 1991, "name":"West Melb (Res)", "value": 5, "value2": 15},
-    {"year": 1991, "name":"Southbank", "value": 50, "value2": 15},
-    {"year": 1992, "name":"Melb CBD", "value": 20, "value2": 15},
-    {"year": 1992, "name":"East Melbourne", "value": 10, "value2": 15},
-    {"year": 1992, "name":"North Melbourne", "value": 10, "value2": 15},
-    {"year": 1992, "name":"Docklands", "value": 43, "value2": 15},
-    {"year": 1993, "name":"Port Melbourne", "value": 30, "value2": 15},
-    {"year": 1993, "name":"East Melbourne 2", "value": 40, "value2": 15},
-    {"year": 1993, "name":"West Melb (Indus) 2", "value": 20, "value2": 15},
-    {"year": 1993, "name":"West Melb (Res) 2", "value": 17, "value2": 15},
-    {"year": "Food and Beverage Services", "name":"South Yarra 2", "value": 60, "value2": 15},
-]
-
-// sample data array (for step 2)
-var treeData = [
-    {"value": 100, "name": "Employment", "group": "Finance and Insurance"},
-    {"value": 70, "name": "Employment", "group": "Accommodation"},
-    {"value": 40, "name": "Business", "group": "Accommodation"},
-    {"value": 15, "name": "Employment", "group": "Information Media and Telecommunications"},
-    {"value": 50, "name": "Business", "group": "Information Media and Telecommunications"},
-    {"value": 60, "name": "Business", "group": "Food and Beverage Services"}
-]
-
-// sample data (for step 3)
-var step3data = [
-  {"year": "Finance and Insurance", "name":"Employment", "value": 15},
-  {"year": "Finance and Insurance", "name":"Graduated", "value": 10},
-  {"year": "Education and Training", "name":"Employment", "value": 5},
-  {"year": "Education and Training", "name":"Graduated", "value": 50},
-  {"year": "Accommodation", "name":"Employment", "value": 20},
-  {"year": "Accommodation", "name":"Graduated", "value": 10},
-  {"year": "Health Care and Social Assistance", "name":"Employment", "value": 10},
-  {"year": "Health Care and Social Assistance", "name":"Graduated", "value": 43},
-  {"year": "Information Media and Telecommunications", "name":"Employment", "value": 30},
-  {"year": "Information Media and Telecommunications", "name":"Graduated", "value": 40},
-  {"year": "Public Administration and Safety", "name":"Employment", "value": 20},
-  {"year": "Public Administration and Safety", "name":"Graduated", "value": 17},
-  {"year": "Food and Beverage Services", "name":"Employment", "value": 60},
-  {"year": "Food and Beverage Services", "name":"Graduated", "value": 60},
-  {"year": "Real Estate Services", "name":"Employment", "value": 25},
-  {"year": "Real Estate Services", "name":"Graduated", "value": 32}
-]
-
-// sample data (for step 4)
-var step4data = [
-    {"year": 1991, "name":"KFC", "value": 17},
-    {"year": 1992, "name":"KFC", "value": 20},
-    {"year": 1993, "name":"KFC", "value": 25},
-    {"year": 1994, "name":"KFC", "value": 33},
-    {"year": 1995, "name":"KFC", "value": 52},
-    {"year": 1991, "name":"7-Eleven", "value": 36},
-    {"year": 1992, "name":"7-Eleven", "value": 32},
-    {"year": 1993, "name":"7-Eleven", "value": 40},
-    {"year": 1994, "name":"7-Eleven", "value": 58},
-    {"year": 1995, "name":"7-Eleven", "value": 13},
-    {"year": 1991, "name":"Wilson Parking", "value": 24},
-    {"year": 1992, "name":"Wilson Parking", "value": 27},
-    {"year": 1993, "name":"Wilson Parking", "value": 27},
-    {"year": 1994, "name":"Wilson Parking", "value": 35},
-    {"year": 1995, "name":"Wilson Parking", "value": 40}
-  ]
-
-
-
-
 // D3Plus Scale
 // Source: https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.js
 var colorAry = ["#b22200", "#282F6B", "#b39600", "#B35C1E", "#224F20", "#5F487C", "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8", "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"];
@@ -100,7 +31,7 @@ head.appendChild(style);
 
 function createStackbar() {
     var wStack = d3.select('#step1stack').node().getBoundingClientRect().width;
-    var hStack = 350;
+    var hStack = 600;
 
     var svg = d3.select("#step1stack")
                 .append('svg')
@@ -108,33 +39,34 @@ function createStackbar() {
                 .attr("height", hStack);
 
     var padStack = 5;
-    var botStack = 120;
+    var botStack = 150;
     var leftStack = 80;
+    var topStack = 20;
 
     var empColor = '#D1D1D1';
-    var busColor = '#D21F1C';
+    var busColor = '#3E427A';
 
     // Add stacked bar chart
     var l_converter = d3.scale.linear()
-    .domain([0, 100])
-    .range([0, hStack - botStack]);
+    .domain([0, d3.max(step1data, function(d) { return d.total; })])
+    .range([0, hStack - botStack - topStack]);
 
     var estbar = svg.selectAll("rect")
-        .data(stackdata);
+        .data(step1data);
 
     var empbar = svg.selectAll("rect")
-    .data(stackdata);
+    .data(step1data);
 
-    var barWidth = ((wStack - leftStack) / stackdata.length) - padStack;
+    var barWidth = ((wStack - leftStack) / step1data.length) - padStack;
 
     // Add axis
     var xScale = d3.scale.ordinal()
-        .domain( d3.map(stackdata, function(d){return d.name;}).keys() )
+        .domain( d3.map(step1data, function(d){return d.areaname;}).keys() )
         .rangePoints([0, wStack - leftStack - barWidth]);
 
     var yScale = d3.scale.linear()
-        .domain([0, d3.max(stackdata, function(d) { return d.value + d.value2; }) ])
-        .range([hStack, botStack]);
+        .domain([1, d3.max(step1data, function(d) { return d.total; }) ])
+        .range([hStack, botStack + topStack]);
 
     var xAxis = d3.svg.axis()
         .orient("bottom")
@@ -206,27 +138,29 @@ function createStackbar() {
     // Draw Graph
     empbar.enter()
         .append("rect")
-        .attr("x", function(d, i) { return i * ((wStack - leftStack) / stackdata.length) + leftStack; })
+        .attr("x", function(d, i) { return i * ((wStack - leftStack) / step1data.length) + leftStack; })
         .attr("y", hStack - botStack)
         .attr("width", barWidth)
         .attr('height', 0)
         .attr('fill', empColor)
         .attr('stroke', '#ADADAD')
+        .attr("opacity", 0.8)
         .transition().duration(1000)
-            .attr("y", function(d, i) { return hStack - l_converter(d.value) - botStack })
-            .attr("height", function(d, i) { return l_converter(d.value) } );
+            .attr("y", function(d, i) { return hStack - l_converter(d.emp) - botStack })
+            .attr("height", function(d, i) { return l_converter(d.emp) } );
     
     estbar.enter()
         .append("rect")
-        .attr("x", function(d, i) { return i * ((wStack - leftStack) / stackdata.length) + leftStack ; })
-        .attr("y", function(d, i) { return hStack - l_converter(d.value) - botStack })
+        .attr("x", function(d, i) { return i * ((wStack - leftStack) / step1data.length) + leftStack ; })
+        .attr("y", function(d, i) { return hStack - l_converter(d.emp) - botStack })
         .attr("width", barWidth)
         .attr('height', 0)
         .attr('fill', busColor)
         .attr('stroke', '#ADADAD')
+        .attr("opacity", 0.8)
         .transition().duration(500).delay(1000)
-            .attr("y", function(d, i) { return hStack - l_converter(d.value) - l_converter(d.value2) - botStack })
-            .attr("height", function(d, i) { return l_converter(d.value2) } )
+            .attr("y", function(d, i) { return hStack - l_converter(d.emp) - l_converter(d.bus) - botStack })
+            .attr("height", function(d, i) { return l_converter(d.bus) } )
 
       // Add mouse interactions
     var step1mover = function(d) {
@@ -235,11 +169,11 @@ function createStackbar() {
             .duration(200)
             .style("opacity", .9);
         // Set data in tooltip	
-        tooltip.html("Employment: " + d.value)
+        tooltip.html("Employment: " + d.emp)
             .style("left", function() { return (d3.event.pageX) + "px"; })		
             .style("top", function() { return (d3.event.pageY - 30) + "px"; });
         // Highlight the current link
-        d3.select(this).attr("opacity", .8);
+        d3.select(this).attr("opacity", 1);
     }
 
     var step1moverBus = function(d) {
@@ -248,11 +182,11 @@ function createStackbar() {
             .duration(200)
             .style("opacity", .9);
         // Set data in tooltip	
-        tooltip.html("Business: " + d.value2)
+        tooltip.html("Business: " + d.bus)
             .style("left", function() { return (d3.event.pageX) + "px"; })		
             .style("top", function() { return (d3.event.pageY - 30) + "px"; });
         // Highlight the current link
-        d3.select(this).attr("opacity", .8);
+        d3.select(this).attr("opacity", 1);
     }
     
     var step1mout = function(d) {
@@ -261,7 +195,7 @@ function createStackbar() {
             .duration(500)
             .style("opacity", 0);
         // Cancel highlight
-        d3.select(this).attr("opacity", 1);
+        d3.select(this).attr("opacity", 0.8);
     }
 
     var step1mmov = function(d) {
@@ -280,7 +214,7 @@ function createStackbar() {
 
     // Add Axis Label
     svg.append("text")
-        .attr("transform", "translate(30, 120) rotate(-90)")
+        .attr("transform", "translate(10, " + ((hStack - botStack)/2) + ") rotate(-90)")
         .attr('font-size', '12px')
         .text("Count")
     
@@ -292,7 +226,7 @@ function createStackbar() {
 
     svg.append("g")
         .attr("class", "legendOrdinal")
-        .attr("transform", "translate(" + (wStack - 200) + ",0)");
+        .attr("transform", "translate(" + (wStack - 100) + ",0)");
 
     svg.select(".legendOrdinal")
         .call(function(thisele) {
@@ -416,9 +350,9 @@ function createTreeMap() {
 
     var visualization = d3plus.viz()
         .container("#step2tree")
-        .data(treeData)
+        .data(step2data)
         .type("tree_map")
-        .id(["group","name"])
+        .id(["industry","type"])
         .size("value")
         .labels({"align": "left", "valign": "top"})
         .font({ "family": "system-ui", "size": 16 })
@@ -438,28 +372,60 @@ function createTreeMap() {
 function createCompBar() {
 
     var attributes = [
-        {"name": "Employment", "hex": "#CCC"},
-        {"name": "Graduated", "hex": "#C00"}
+        {"type": "Employment", "hex": "#CCC"},
+        {"type": "Graduated Students", "hex": "#C00"}
     ]
     
     var bWidth = d3.select('body').node().getBoundingClientRect().width;
     var comp_fsize = 16;
     var comp_legsize = 100;
+    var comp_fsize_s = 12;
+    var comp_legsize_s = 20;
     if(bWidth < 767) {
         // Small screen font size
         comp_fsize = 10;
+        comp_fsize_s = 10;
         comp_legsize = 60;
+        comp_legsize_s = 20;
     }
 
     var visualization = d3plus.viz()
         .container("#step3bar")
         .data(step3data)
         .type("bar")
-        .id("name")
+        .id("type")
         .x("value")
-        .y({"scale": "discrete", "value":"year"})
+        .y({"scale": "discrete", "value":"industry"})
         .font({"size": comp_fsize, "weight": 400})
         .legend({ "filters": true, "size": comp_legsize})
+        .attrs(attributes)
+        .color("hex")
+        .order({"sort":"desc", "value": "value"})
+        .draw()
+
+    var visualization = d3plus.viz()
+        .container("#step3empmore")
+        .data(step3empmore)
+        .type("bar")
+        .id("type")
+        .x("value")
+        .y({"scale": "discrete", "value":"industry"})
+        .font({"size": comp_fsize_s, "weight": 400})
+        .legend({ "filters": true, "size": comp_legsize_s})
+        .attrs(attributes)
+        .color("hex")
+        .order({"sort":"desc", "value": "value"})
+        .draw()
+
+    var visualization = d3plus.viz()
+        .container("#step3gradmore")
+        .data(step3gradmore)
+        .type("bar")
+        .id("type")
+        .x("value")
+        .y({"scale": "discrete", "value":"industry"})
+        .font({"size": comp_fsize_s, "weight": 400})
+        .legend({ "filters": true, "size": comp_legsize_s})
         .attrs(attributes)
         .color("hex")
         .order({"sort":"desc", "value": "value"})
@@ -481,8 +447,10 @@ function createLinePlot() {
 
     var attributes = [
         {"name": "7-Eleven", "hex": colorList(1)},
-        {"name": "KFC", "hex": colorList(2)},
-        {"name": "Wilson Parking", "hex": colorList(3)},
+        {"name": "RMIT", "hex": colorList(2)},
+        {"name": "Subway", "hex": colorList(3)},
+        {"name": "Telstra", "hex": colorList(4)},
+        {"name": "Wilson Parking", "hex": colorList(5)},
     ];
     
     var visualization = d3plus.viz()
