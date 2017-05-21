@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.leaflet-popup-pane {
+  opacity: 0.8;
+}
+
 #step1stack {
   width: 100%;
 }
@@ -23,7 +27,7 @@
 .xaxeStack text,
 .yaxeStack text {
   font-family: sans-serif;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .xaxeStack text {
@@ -36,7 +40,7 @@
 }
 
 .xaxeStack line {
-  stroke: transparent;
+  stroke: black;
 }
 
 .grid line {
@@ -48,6 +52,19 @@
 .grid path {
   stroke-width: 0;
   fill: transparent;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  color: #444444;
+  font-family: "Helvetica Neue";
+  font-weight: 400;
+  font-size: 16px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 3px;
+  z-index: 2000;
+  background: #fff;
+  padding: 10px;
 }
 
 #step2tree {

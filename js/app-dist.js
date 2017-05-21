@@ -18,13 +18,16 @@ var step4data = [{ "year": 1991, "name": "KFC", "value": 17 }, { "year": 1992, "
 
 function createStackbar() {
     var wStack = d3.select("#step1stack").node().getBoundingClientRect().width;
-    var hStack = 300;
+    var hStack = 350;
 
     var svg = d3.select("#step1stack").append("svg").attr("width", wStack).attr("height", hStack);
 
-    var padStack = 2;
-    var botStack = 100;
+    var padStack = 5;
+    var botStack = 120;
     var leftStack = 80;
+
+    var empColor = "#D1D1D1";
+    var busColor = "#D21F1C";
 
     // Add stacked bar chart
     var l_converter = d3.scale.linear().domain([0, 100]).range([0, hStack - botStack]);
@@ -69,13 +72,18 @@ function createStackbar() {
     // Style the axis
     svg.selectAll(".xaxeStack text") // select all the text elements for the xaxis
     .attr("transform", function (d) {
-        return "translate(" + this.getBBox().height * -2 + "," + this.getBBox().height + ")rotate(-45)";
-    });
+        return "translate(" + (this.getBBox().height * -2 + 10) + "," + (this.getBBox().height - 10) + ")rotate(-45)";
+    }).attr("font-size", 20);
+
+    svg.selectAll(".xaxeStack text, .yaxeStack text").attr("fill", "#666");
+
+    // Tooltip
+    var tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
     // Draw Graph
     empbar.enter().append("rect").attr("x", function (d, i) {
         return i * ((wStack - leftStack) / stackdata.length) + leftStack;
-    }).attr("y", hStack - botStack).attr("width", barWidth).attr("height", 0).attr("fill", "gray").transition().duration(1000).attr("y", function (d, i) {
+    }).attr("y", hStack - botStack).attr("width", barWidth).attr("height", 0).attr("fill", empColor).attr("stroke", "#ADADAD").transition().duration(1000).attr("y", function (d, i) {
         return hStack - l_converter(d.value) - botStack;
     }).attr("height", function (d, i) {
         return l_converter(d.value);
@@ -85,32 +93,74 @@ function createStackbar() {
         return i * ((wStack - leftStack) / stackdata.length) + leftStack;
     }).attr("y", function (d, i) {
         return hStack - l_converter(d.value) - botStack;
-    }).attr("width", barWidth).attr("height", 0).attr("fill", "red").transition().duration(500).delay(1000).attr("y", function (d, i) {
+    }).attr("width", barWidth).attr("height", 0).attr("fill", busColor).attr("stroke", "#ADADAD").transition().duration(500).delay(1000).attr("y", function (d, i) {
         return hStack - l_converter(d.value) - l_converter(d.value2) - botStack;
     }).attr("height", function (d, i) {
         return l_converter(d.value2);
     });
 
+    // Add mouse interactions
+    var step1mover = function step1mover(d) {
+        // Show tooltip		
+        tooltip.transition().duration(200).style("opacity", .9);
+        // Set data in tooltip	
+        tooltip.html("Employment: " + d.value).style("left", function () {
+            return d3.event.pageX + "px";
+        }).style("top", function () {
+            return d3.event.pageY - 30 + "px";
+        });
+        // Highlight the current link
+        d3.select(this).attr("opacity", .8);
+    };
+
+    var step1moverBus = function step1moverBus(d) {
+        // Show tooltip		
+        tooltip.transition().duration(200).style("opacity", .9);
+        // Set data in tooltip	
+        tooltip.html("Business: " + d.value2).style("left", function () {
+            return d3.event.pageX + "px";
+        }).style("top", function () {
+            return d3.event.pageY - 30 + "px";
+        });
+        // Highlight the current link
+        d3.select(this).attr("opacity", .8);
+    };
+
+    var step1mout = function step1mout(d) {
+        // Hide tooltip
+        tooltip.transition().duration(500).style("opacity", 0);
+        // Cancel highlight
+        d3.select(this).attr("opacity", 1);
+    };
+
+    var step1mmov = function step1mmov(d) {
+        tooltip.style("left", d3.event.pageX + "px").style("top", d3.event.pageY - 30 + "px");
+    };
+
+    empbar.on("mouseover", step1mover).on("mouseout", step1mout).on("mousemove", step1mmov);
+
+    estbar.on("mouseover", step1moverBus).on("mouseout", step1mout).on("mousemove", step1mmov);
+
     // Add Axis Label
     svg.append("text").attr("transform", "translate(30, 120) rotate(-90)").attr("font-size", "12px").text("Count");
 
     // Add Legend
-    var legendList = [{ "name": "Employment", "color": "grey" }, { "name": "Business", "color": "red" }];
+    var legendList = [{ "name": "Employment", "color": empColor }, { "name": "Business", "color": busColor }];
 
     svg.append("g").attr("class", "legendOrdinal").attr("transform", "translate(" + (wStack - 200) + ",0)");
 
     svg.select(".legendOrdinal").call(function (thisele) {
-        thisele.selectAll("rect").data(legendList).enter().append("rect").attr("width", 10).attr("height", 10).attr("x", 0).attr("y", function (d, i) {
-            return i * 15;
+        thisele.selectAll("rect").data(legendList).enter().append("rect").attr("width", 12).attr("height", 12).attr("x", 0).attr("y", function (d, i) {
+            return i * 18 + 5;
         }).attr("fill", function (d, i) {
             return d.color;
         });
 
         thisele.selectAll("text").data(legendList).enter().append("text").text(function (d, i) {
             return d.name;
-        }).attr("x", 15).attr("y", function (d, i) {
-            return i * 15 + 8;
-        }).attr("font-size", "10px");
+        }).attr("x", 18).attr("y", function (d, i) {
+            return i * 18 + 15;
+        }).attr("font-size", "12px").attr("fill", "#666");
     });
 
     // End function createStackbar
@@ -120,7 +170,9 @@ function createStackbar() {
 var layer, geojson;
 function createChoroMap() {
     var openmap = L.map("choro", {
-        doubleClickZoom: false
+        doubleClickZoom: false,
+        zoomControl: false,
+        scrollWheelZoom: false
     }).setView([-37.8154, 144.9437], 11.5);
 
     L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
@@ -135,7 +187,7 @@ function createChoroMap() {
 }
 
 function openmapOnEach(feature, layer) {
-    layer.bindPopup(feature.properties.featurenam, { closeButton: true, offset: L.point(0, 0) });
+    layer.bindPopup(feature.properties.featurenam, { closeButton: true, offset: L.point(0, 30), autoPan: false });
     layer.on({
         mouseover: openmapMouseOver,
         mouseout: openmapMouseOut
@@ -177,7 +229,7 @@ function openmapMouseOver(e) {
 
     // Highlight Stack Bar Chart
     // - TODO: Change 3 to the right number
-    d3.select(".xaxeStack text").attr("fill", "black");
+    d3.selectAll(".xaxeStack text").attr("fill", "#666");
     d3.select(".xaxeStack g:nth-child(3) text").attr("fill", "#BB3C1C");
 }
 
@@ -223,6 +275,8 @@ function createLinePlot() {
     .y("value") // key to use for y-axis
     .x("year") // key to use for x-axis
     .font({ "size": 16, "weight": 400 }).legend({ "size": 100 }).draw() // finally, draw the visualization!
+
+    // Draw Line Plot
 
     ;
 }
