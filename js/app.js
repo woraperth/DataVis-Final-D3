@@ -443,6 +443,8 @@ function createCompBar() {
 *
 */
 function createLinePlot() {
+
+    var color = d3.scale.ordinal(d3.schemeCategory10);
     
     var visualization = d3plus.viz()
         .container("#step4line")  // container DIV to hold the visualization
@@ -455,10 +457,6 @@ function createLinePlot() {
         .font({"size": 16, "weight": 400})
         .legend({ "size": 100})
         .draw()             // finally, draw the visualization!
-
-        // Draw Line Plot
-        
-
 }
 
 

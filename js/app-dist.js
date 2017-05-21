@@ -267,6 +267,8 @@ function createCompBar() {
 */
 function createLinePlot() {
 
+    var color = d3.scale.ordinal(d3.schemeCategory10);
+
     var visualization = d3plus.viz().container("#step4line") // container DIV to hold the visualization
     .data(step4data) // data to use with the visualization
     .type("line") // visualization type
@@ -275,9 +277,6 @@ function createLinePlot() {
     .y("value") // key to use for y-axis
     .x("year") // key to use for x-axis
     .font({ "size": 16, "weight": 400 }).legend({ "size": 100 }).draw() // finally, draw the visualization!
-
-    // Draw Line Plot
-
     ;
 }
 
