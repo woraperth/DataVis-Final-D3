@@ -21,8 +21,13 @@ if (style.styleSheet) {
 } else {
     style.appendChild(document.createTextNode(css));
 }
-
 head.appendChild(style);
+
+// Utility function from Elias Zamaria
+// Referenece: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 /*
 * STEP 1
@@ -40,14 +45,12 @@ function createStackbar() {
     var topStack = 20;
 
     var empColor = "#D1D1D1";
-    var busColor = "#3E427A";
+    var busColor = "#666";
 
     // Add stacked bar chart
     var l_converter = d3.scale.linear().domain([0, d3.max(step1data, function (d) {
         return d.total;
     })]).range([0, hStack - botStack - topStack]);
-
-    var estbar = svg.selectAll("rect").data(step1data);
 
     var barWidth = (wStack - leftStack) / step1data.length - padStack;
 
@@ -96,6 +99,8 @@ function createStackbar() {
     // Draw Graph
     var empgroup = svg.append("g").attr("class", "empbar");
     var empbar = svg.select(".empbar").selectAll("rect").data(step1data);
+    var estgroup = svg.append("g").attr("class", "estbar");
+    var estbar = svg.select(".estbar").selectAll("rect").data(step1data);
 
     empbar.enter().append("rect").attr("x", function (d, i) {
         return i * ((wStack - leftStack) / step1data.length) + leftStack;
@@ -120,7 +125,7 @@ function createStackbar() {
         // Show tooltip		
         tooltip.transition().duration(200).style("opacity", .9);
         // Set data in tooltip	
-        tooltip.html("Employment: " + d.emp).style("left", function () {
+        tooltip.html("Employment: " + numberWithCommas(d.emp)).style("left", function () {
             return d3.event.pageX + "px";
         }).style("top", function () {
             return d3.event.pageY - 30 + "px";
@@ -133,7 +138,7 @@ function createStackbar() {
         // Show tooltip		
         tooltip.transition().duration(200).style("opacity", .9);
         // Set data in tooltip	
-        tooltip.html("Business: " + d.bus).style("left", function () {
+        tooltip.html("Business: " + numberWithCommas(d.bus)).style("left", function () {
             return d3.event.pageX + "px";
         }).style("top", function () {
             return d3.event.pageY - 30 + "px";
@@ -158,7 +163,7 @@ function createStackbar() {
     estbar.on("mouseover", step1moverBus).on("mouseout", step1mout).on("mousemove", step1mmov);
 
     // Add Axis Label
-    svg.append("text").attr("transform", "translate(10, " + (hStack - botStack) / 2 + ") rotate(-90)").attr("font-size", "12px").text("Count");
+    svg.append("text").attr("transform", "translate(10, " + (hStack - botStack) / 2 + ") rotate(-90)").attr("font-size", "12px").text("Number of people");
 
     // Add Legend
     var legendList = [{ "name": "Employment", "color": empColor }, { "name": "Business", "color": busColor }];
@@ -197,12 +202,6 @@ function createChoroMap() {
     }).addTo(openmap);
 
     // Custom Legend
-
-    // Utility function from Elias Zamaria
-    // Referenece: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 
     var legend = L.control({ position: "bottomright" });
     legend.onAdd = function (map) {
@@ -292,7 +291,7 @@ function openmapMouseOver(e) {
 
     d3.select(".xaxeStack g:nth-child(" + (labelBar + 1) + ") text").transition().attr("fill", "#BB3C1C");
 
-    d3.select(".empbar rect:nth-child(" + (labelBar + 1) + ")").transition().attr("fill", "#BB3C1C");
+    d3.selectAll(".empbar rect:nth-child(" + (labelBar + 1) + "), .estbar rect:nth-child(" + (labelBar + 1) + ")").transition().attr("fill", "#BB3C1C");
 }
 
 // Mouse Out
@@ -305,6 +304,8 @@ function openmapMouseOut(e) {
     d3.selectAll(".xaxeStack text").transition().attr("fill", "#666");
 
     d3.selectAll(".empbar rect").transition().attr("fill", "#D1D1D1");
+
+    d3.selectAll(".estbar rect").transition().attr("fill", "#666");
 }
 
 /*
@@ -337,11 +338,11 @@ function createCompBar() {
         comp_legsize_s = 20;
     }
 
-    var visualization = d3plus.viz().container("#step3bar").data(step3data).type("bar").id("type").x("value").y({ "scale": "discrete", "value": "industry" }).font({ "size": comp_fsize, "weight": 400 }).legend({ "filters": true, "size": comp_legsize }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
+    var visualization = d3plus.viz().container("#step3bar").data(step3data).type("bar").id("type").x({ "value": "value", "label": "Number of people" }).y({ "scale": "discrete", "value": "industry" }).font({ "size": comp_fsize, "weight": 400 }).legend({ "filters": true, "size": comp_legsize }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
 
-    var visualization = d3plus.viz().container("#step3empmore").data(step3empmore).type("bar").id("type").x("value").y({ "scale": "discrete", "value": "industry" }).font({ "size": comp_fsize_s, "weight": 400 }).legend({ "filters": true, "size": comp_legsize_s }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
+    var visualization = d3plus.viz().container("#step3empmore").data(step3empmore).type("bar").id("type").x({ "value": "value", "label": "Number of people" }).y({ "scale": "discrete", "value": "industry" }).font({ "size": comp_fsize_s, "weight": 400 }).legend({ "filters": true, "size": comp_legsize_s }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
 
-    var visualization = d3plus.viz().container("#step3gradmore").data(step3gradmore).type("bar").id("type").x("value").y({ "scale": "discrete", "value": "industry" }).font({ "size": comp_fsize_s, "weight": 400 }).legend({ "filters": true, "size": comp_legsize_s }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
+    var visualization = d3plus.viz().container("#step3gradmore").data(step3gradmore).type("bar").id("type").x({ "value": "value", "label": "Number of people" }).y({ "scale": "discrete", "value": "industry" }).font({ "size": comp_fsize_s, "weight": 400 }).legend({ "filters": true, "size": comp_legsize_s }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
 }
 
 /*
@@ -357,7 +358,7 @@ function createLinePlot() {
     .type("line") // visualization type
     .id("name") // key for which our data is unique on
     .text("name") // key to use for display text
-    .y("value") // key to use for y-axis
+    .y({ "value": "value", "label": "Number of blocks" }) // key to use for y-axis
     .x("year") // key to use for x-axis
     .attrs(attributes).color("hex").legend({ filters: true }).font({ "size": 16, "weight": 400 }).draw() // finally, draw the visualization!
     ;

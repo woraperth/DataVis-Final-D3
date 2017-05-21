@@ -4,7 +4,8 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-  <title>Document</title>
+  <title>Job Market in Melbourne</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"/>
@@ -15,8 +16,10 @@
   <div class="section hero is-dark is-bold">
     <div class="container">
       <div class="content">
-        <h1 class="title">Job Market in Melbourne</h1>
-        <h2 class="title">The story of job market in Melbourne</h2>
+        <h1 class="title">Melbourne Job Market</h1>
+        <h3 class="title">The story of people who powered Melbourne</h3>
+        <p>Melbourne is ranked as the world's most liveable city for 6 consecutive years, while being the 15th most expensive city in the world. A lot of people come to work in Melbourne every year without knowing which industry is driving the city, and where are the opportunities for them.</p>
+        <p>This interactive visualization is created to discover the job market in Melbourne.</p><small>* The data in this study is from 2002 to 2015. Data sources are provided in the Acknowledgements section.</small>
       </div>
     </div>
   </div>
@@ -25,7 +28,6 @@
       <div class="content">
         <h2>1. Melbourne Job Map</h2>
         <p>First, we will look at the number of employments and business establishments in Melbourne.</p>
-        <p>It is not surprising to see that <b>Melbourne CBD</b> is the most crowded area for work. The second and third places are Docklands and Southbank, Respectively.</p>
         <div class="columns">
           <div class="column is-5">
             <div id="choro"></div>
@@ -34,7 +36,9 @@
             <div id="step1stack"></div>
           </div>
         </div>
-        <p>Next, we will explore which industry is the most popular in Melbourne.</p>
+        <p>We can see that most jobs are concentrated in <b>Melbourne CBD</b> area. It has 4 - 5 times bigger job market than the second and third places, which are <b>Docklands</b> and <b>Southbank</b>.</p>
+        <p>The point worth mentioning is that <b>South Yarra</b> and <b>West Melbourne</b> have incredibly low employments and business counts (164 and 2,066 employments comparing to 172,000+ employments in CBD), despite the fact that they are 10 - 20 minutes from the CBD.</p>
+        <p>This contrast can be seen as the benefit for people who lived in Melbourne. They can live happily with their kids and pets in the quiet, low business area, and take a train just for 20 minutes to work in the high business area. On the other hand, this might be the cause of the expensive house price in Melbourne.</p>
       </div>
     </div>
   </div>
@@ -42,8 +46,15 @@
   <div class="section">
     <div class="container">
       <div class="content">
-        <h2>2. Employment in each industry</h2>
+        <h2>2. Employments in each industry</h2>
+        <p>There are 19 industries classified by Australian and New Zealand Standard Industrial Classification (ANZSIC). We will look at the market share of job in each industry.</p>
+        <p><small>* Click on the industry block to see the proportion of employment VS business establishments</small></p>
         <div id="step2tree"></div>
+        <p></p>
+        <p>There are some popular industries in Melbourne which hire huge amount of employees every year. The biggest industries are health-related, <b>Finance and Insurance</b> (21%) and <b>Health Care and Social Assistance</b> (12%). This tells us that banks and hospitals are hiring one third of workers in Melbourne. The students who graduated from this field will not have much problem finding a job.</p>
+        <p>The ratio of Employment / Business (click on the industry block to view) in each industry shows us which industry is full of corporates (High number of people per business), and which industry is full of self-made entrepreneurs (Small number of people per business). For instances, <b>Finance and Insurance</b> and <b> Health Care and Social Assistance</b> industries are mostly corporates.</p>
+        <p>For those who do not want to work in the big corporates, Melbourne also have a place for them. There are fair share of industries with small businesses such as <b>Food and Beverage Services</b> (12%) and <b>Retail Trade</b> (7.7%).</p>
+        <p>In contrast, people in Melbourne are not much interested in working with real estates. <b>Real Estate Services</b> (1.4%) and <b>Construction</b> (1.2%) businesses are not popular here.</p>
       </div>
     </div>
   </div>
@@ -52,7 +63,18 @@
     <div class="container">
       <div class="content">
         <h2>3. Number of jobs available VS Graduated students</h2>
+        <p>At this point, we have analyzed where and what industry are the most popular in Melbourne. But we need to know whether the industry we would like to work at is high or low competitive.</p>
+        <p>We will compare the number of employments with the number of graduated students in Victoria in 2015.</p>
         <div id="step3bar"></div>
+        <p></p>
+        <p><small>* The legend boxes below the plot can be clicked to filter the data</small></p>
+        <p>It is no secret that the most popular field of study is <b>Management and Commerce</b>. In 2015, there are 33,135 students in Victoria who graduated from this field comparing to 11,655 students in the second most popular field, Health.</p>
+        <p>Since the curriculum of this field covered many big industries in Melbourne, <b>Finance and Insurance</b>, <b>Retail Trade</b>, and <b>Wholesale Trade</b> industries are considered to have the same number of graduated students.</p>
+        <p>With this information, we can divide the industries into 2 groups based on the demand and supply:</p>
+        <ol>
+          <li><b>High competitive industries</b> - The industries with more graduates than employments.</li>
+          <li><b>Low competitive industries</b> - The industries with less graduates than employments.</li>
+        </ol>
       </div>
     </div>
   </div>
@@ -61,12 +83,18 @@
       <div class="content">
         <div class="columns">
           <div class="column">
-            <h3>Industry with more graduates than employments</h3>
-            <div id="step3empmore"></div>
+            <h3>High Competitive Industry</h3>
+            <div id="step3gradmore"></div>
+            <p></p>
+            <p>We found that most of the high competitive industries are the industries that graduated students from <b>Management and Commerce</b> field can work in.</p>
+            <p>Therefore, it might not be the greatest idea to study in this field since there will be a huge amount of competitors when you are graduated.</p>
           </div>
           <div class="column">
-            <h3>Industry with more employments than graduates</h3>
-            <div id="step3gradmore"></div>
+            <h3>Low Competitive Industry</h3>
+            <div id="step3empmore"></div>
+            <p></p>
+            <p><b>Finance and Insurance</b> and <b>Heath Care and Social Assistance</b> industries can be considered as the best field to study and work in Melbourne. Since we saw from the previous section that they are two biggest industries in Melbourne, and they also have low competition.</p>
+            <p>For those who does not like working in big corporates, <b>Food and Beverage Services</b> industry is also a good industry with low competition.</p>
           </div>
         </div>
       </div>
@@ -76,10 +104,12 @@
   <div class="section">
     <div class="container">
       <div class="content">
-        <h2>4. The biggest companies you can rely on:</h2>
+        <h2>4. The biggest companies in the city of Melbourne</h2>
+        <p>It does not matter whether you would like to work with companies in Melbourne, or open your own business here. You need to know which companies are rising or falling. Because you never know that one day you might have to work with / against them.</p>
+        <p>We analyzed the number of <a href="https://data.melbourne.vic.gov.au/Economy/Blocks-for-Census-of-Land-Use-and-Employment-CLUE-/aia8-ryiq?_ga=1.266243151.1140869212.1488680940" title="CLUE Blocks">blocks</a> (one block = one commercial spot. It can be a building or part of the building) owned by each business name and found some interesting points.</p>
         <div class="columns">
           <div class="column is-5">
-            <p>The top companies that own the most buildings are:</p>
+            <p>The companies that own the most blocks in the city of Melbourne are:</p>
             <ol class="topcomp-list">
               <li>7-Eleven</li>
               <li>RMIT</li>
@@ -87,6 +117,9 @@
               <li>Telstra</li>
               <li>Wilson Parking</li>
             </ol>
+            <p>The top companies are <b>7-Eleven</b> and <b>RMIT</b> with the same amount of owned blocks. <b>7-Eleven</b> has the steady growth from 24 blocks to 42 blocks in 14 years.</p>
+            <p>While the growth of <b>RMIT</b> is unstable. It jumped from 21 blocks to 41 blocks in the duration of 2006 to 2008.</p>
+            <p><b>Wilson Parking</b> had the most dramatic drop. It used to be one of the top companies in 2002, then went from 46 blocks to 6 blocks in 2015. </p>
           </div>
           <div class="column is-7">
             <div id="step4line"></div>
@@ -101,19 +134,30 @@
         <h2>Acknowledgements</h2>
         <h3>Data Sources</h3>
         <ul class="acknow">
-          <li><a href="http://highereducationstatistics.education.gov.au">uCube</a>, Department of Education and Training, Australian Government</li>
-          <li><a href="https://data.melbourne.vic.gov.au/clue">Census of Land Use and Employment (CLUE)</a>, City of Melbourne's Open Data Platform</li>
+          <li><a href="http://highereducationstatistics.education.gov.au">uCube</a>, Department of Education and Training, Australian Government
+            <ul>
+              <li>The information of graduated (completion) students in different field of study</li>
+            </ul>
+          </li>
+          <li><a href="https://data.melbourne.vic.gov.au/clue">Census of Land Use and Employment (CLUE)</a>, City of Melbourne's Open Data Platform
+            <ul>
+              <li>Geographic data of suburbs in the city of Melbourne</li>
+              <li>Employment per industry per blocks</li>
+              <li>Business establishments per industry per blocks</li>
+              <li>Business establishments trading name and industry classification</li>
+            </ul>
+          </li>
           <li><a href="http://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/1292.0.55.002Main+Features12006?OpenDocument">Australian and New Zealand Standard Industrial Classification (ANZSIC)</a>, Australian Bureau of Statistics</li>
         </ul>
       </div>
     </div>
   </div>
-  <footer class="footer is-dark">
+  <footer class="footer">
     <div class="container">
       <div class="content has-text-centered">
         <p><strong>Data Visualization of Melbourne Job Market</strong> by <a href="http://www.byperth.com">Woratana Ngarmtrakulchol</a></p>
         <p>This project is for FIT5147 Data Visualization at Monash University, Australia.</p>
-        <p><a href="https://github.com/jgthms/bulma" class="icon"><i class="fa fa-github"></i></a></p>
+        <p><a href="https://github.com/woraperth" class="icon"><i class="fa fa-github"></i></a></p>
       </div>
     </div>
   </footer>

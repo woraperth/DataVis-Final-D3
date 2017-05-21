@@ -1,3 +1,7 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
 a {
   color: #b22200;
 }
@@ -7,6 +11,14 @@ hr.divider {
   border: 0;
   box-shadow: 0 10px 10px -10px #8c8b8b inset;
   background: transparent;
+}
+
+.is-dark p {
+  color: #eee;
+}
+
+.is-dark small {
+  color: #ccc;
 }
 
 #choro {
