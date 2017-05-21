@@ -12,6 +12,31 @@ var step3data = [{ "year": "Finance and Insurance", "name": "Employment", "value
 // sample data (for step 4)
 var step4data = [{ "year": 1991, "name": "KFC", "value": 17 }, { "year": 1992, "name": "KFC", "value": 20 }, { "year": 1993, "name": "KFC", "value": 25 }, { "year": 1994, "name": "KFC", "value": 33 }, { "year": 1995, "name": "KFC", "value": 52 }, { "year": 1991, "name": "7-Eleven", "value": 36 }, { "year": 1992, "name": "7-Eleven", "value": 32 }, { "year": 1993, "name": "7-Eleven", "value": 40 }, { "year": 1994, "name": "7-Eleven", "value": 58 }, { "year": 1995, "name": "7-Eleven", "value": 13 }, { "year": 1991, "name": "Wilson Parking", "value": 24 }, { "year": 1992, "name": "Wilson Parking", "value": 27 }, { "year": 1993, "name": "Wilson Parking", "value": 27 }, { "year": 1994, "name": "Wilson Parking", "value": 35 }, { "year": 1995, "name": "Wilson Parking", "value": 40 }];
 
+// D3Plus Scale
+// Source: https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.js
+var colorAry = ["#b22200", "#282F6B", "#b39600", "#B35C1E", "#224F20", "#5F487C", "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8", "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"];
+var colorList = d3.scale.ordinal().range(colorAry);
+// How to use: colorList(cat_id) e.g. colorList(1) to colorList(19)
+
+// Add D3 Plus Scale Color to CSS
+var css = "",
+    head = document.head || document.getElementsByTagName("head")[0],
+    style = document.createElement("style");
+
+for (var i = 0; i < 6; i++) {
+    css += ".topcomp-list li:nth-child(" + (i + 1) + ") { color: " + colorAry[i] + "; }";
+}
+console.log(css);
+
+style.type = "text/css";
+if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+} else {
+    style.appendChild(document.createTextNode(css));
+}
+
+head.appendChild(style);
+
 /*
 * STEP 1
 */
@@ -247,7 +272,7 @@ function openmapMouseOut(e) {
 */
 function createTreeMap() {
 
-    var visualization = d3plus.viz().container("#step2tree").data(treeData).type("tree_map").id(["group", "name"]).size("value").labels({ "align": "left", "valign": "top" }).font({ "family": "system-ui", "size": 10 }).draw();
+    var visualization = d3plus.viz().container("#step2tree").data(treeData).type("tree_map").id(["group", "name"]).size("value").labels({ "align": "left", "valign": "top" }).font({ "family": "system-ui", "size": 16 }).draw();
 }
 
 /*
@@ -258,7 +283,16 @@ function createCompBar() {
 
     var attributes = [{ "name": "Employment", "hex": "#CCC" }, { "name": "Graduated", "hex": "#C00" }];
 
-    var visualization = d3plus.viz().container("#step3bar").data(step3data).type("bar").id("name").x("value").y({ "scale": "discrete", "value": "year" }).font({ "size": 16, "weight": 400 }).legend({ "filters": true, "size": 100 }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
+    var bWidth = d3.select("body").node().getBoundingClientRect().width;
+    var comp_fsize = 16;
+    var comp_legsize = 100;
+    if (bWidth < 767) {
+        // Small screen font size
+        comp_fsize = 10;
+        comp_legsize = 60;
+    }
+
+    var visualization = d3plus.viz().container("#step3bar").data(step3data).type("bar").id("name").x("value").y({ "scale": "discrete", "value": "year" }).font({ "size": comp_fsize, "weight": 400 }).legend({ "filters": true, "size": comp_legsize }).attrs(attributes).color("hex").order({ "sort": "desc", "value": "value" }).draw();
 }
 
 /*
@@ -267,7 +301,7 @@ function createCompBar() {
 */
 function createLinePlot() {
 
-    var color = d3.scale.ordinal(d3.schemeCategory10);
+    var attributes = [{ "name": "7-Eleven", "hex": colorList(1) }, { "name": "KFC", "hex": colorList(2) }, { "name": "Wilson Parking", "hex": colorList(3) }];
 
     var visualization = d3plus.viz().container("#step4line") // container DIV to hold the visualization
     .data(step4data) // data to use with the visualization
@@ -276,7 +310,7 @@ function createLinePlot() {
     .text("name") // key to use for display text
     .y("value") // key to use for y-axis
     .x("year") // key to use for x-axis
-    .font({ "size": 16, "weight": 400 }).legend({ "size": 100 }).draw() // finally, draw the visualization!
+    .attrs(attributes).color("hex").legend({ filters: true }).font({ "size": 16, "weight": 400 }).draw() // finally, draw the visualization!
     ;
 }
 

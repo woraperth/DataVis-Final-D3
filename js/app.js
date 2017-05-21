@@ -67,6 +67,32 @@ var step4data = [
 
 
 
+// D3Plus Scale
+// Source: https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.js
+var colorAry = ["#b22200", "#282F6B", "#b39600", "#B35C1E", "#224F20", "#5F487C", "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8", "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"];
+var colorList = d3.scale.ordinal().range( colorAry );
+// How to use: colorList(cat_id) e.g. colorList(1) to colorList(19)
+
+// Add D3 Plus Scale Color to CSS
+var css = '',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+
+for(var i = 0; i < 6; i++) {
+    css += '.topcomp-list li:nth-child(' + (i + 1) + ') { color: ' + colorAry[i] + '; }';
+}
+console.log(css);
+
+style.type = 'text/css';
+if (style.styleSheet){
+    style.styleSheet.cssText = css;
+} else {
+    style.appendChild(document.createTextNode(css));
+}
+
+head.appendChild(style);
+
+
 
 /*
 * STEP 1
@@ -395,7 +421,7 @@ function createTreeMap() {
         .id(["group","name"])
         .size("value")
         .labels({"align": "left", "valign": "top"})
-        .font({ "family": "system-ui", "size": 10 })
+        .font({ "family": "system-ui", "size": 16 })
         .draw()
 
 }
@@ -415,20 +441,29 @@ function createCompBar() {
         {"name": "Employment", "hex": "#CCC"},
         {"name": "Graduated", "hex": "#C00"}
     ]
+    
+    var bWidth = d3.select('body').node().getBoundingClientRect().width;
+    var comp_fsize = 16;
+    var comp_legsize = 100;
+    if(bWidth < 767) {
+        // Small screen font size
+        comp_fsize = 10;
+        comp_legsize = 60;
+    }
 
     var visualization = d3plus.viz()
-    .container("#step3bar")
-    .data(step3data)
-    .type("bar")
-    .id("name")
-    .x("value")
-    .y({"scale": "discrete", "value":"year"})
-    .font({"size": 16, "weight": 400})
-    .legend({ "filters": true, "size": 100})
-    .attrs(attributes)
-    .color("hex")
-    .order({"sort":"desc", "value": "value"})
-    .draw()
+        .container("#step3bar")
+        .data(step3data)
+        .type("bar")
+        .id("name")
+        .x("value")
+        .y({"scale": "discrete", "value":"year"})
+        .font({"size": comp_fsize, "weight": 400})
+        .legend({ "filters": true, "size": comp_legsize})
+        .attrs(attributes)
+        .color("hex")
+        .order({"sort":"desc", "value": "value"})
+        .draw()
 
 }
 
@@ -444,7 +479,11 @@ function createCompBar() {
 */
 function createLinePlot() {
 
-    var color = d3.scale.ordinal(d3.schemeCategory10);
+    var attributes = [
+        {"name": "7-Eleven", "hex": colorList(1)},
+        {"name": "KFC", "hex": colorList(2)},
+        {"name": "Wilson Parking", "hex": colorList(3)},
+    ];
     
     var visualization = d3plus.viz()
         .container("#step4line")  // container DIV to hold the visualization
@@ -454,8 +493,10 @@ function createLinePlot() {
         .text("name")       // key to use for display text
         .y("value")         // key to use for y-axis
         .x("year")          // key to use for x-axis
+        .attrs(attributes)
+        .color("hex")
+        .legend({filters: true})
         .font({"size": 16, "weight": 400})
-        .legend({ "size": 100})
         .draw()             // finally, draw the visualization!
 }
 

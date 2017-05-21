@@ -12,11 +12,11 @@
   <link rel="stylesheet" href="css/custom.css"/>
 </head>
 <body>
-  <div class="section">
+  <div class="section hero is-dark">
     <div class="container">
       <div class="content">
-        <h1>Job Market in Melbourne</h1>
-        <h2>The story of job market in Melbourne</h2>
+        <h1 class="title">Job Market in Melbourne</h1>
+        <h2 class="title">The story of job market in Melbourne</h2>
       </div>
     </div>
   </div>
@@ -24,6 +24,8 @@
     <div class="container">
       <div class="content">
         <h2>1. Melbourne Job Map</h2>
+        <p>First, we will look at the number of employments and business establishments in Melbourne.</p>
+        <p>It is not surprising to see that <b>Melbourne CBD</b> is the most crowded area for work. The second and third places are Docklands and Southbank, Respectively.</p>
         <div class="columns">
           <div class="column is-5">
             <div id="choro"></div>
@@ -32,6 +34,7 @@
             <div id="step1stack"></div>
           </div>
         </div>
+        <p>Next, we will explore which industry is the most popular in Melbourne.</p>
       </div>
     </div>
   </div>
@@ -46,7 +49,7 @@
   <div class="section">
     <div class="container">
       <div class="content">
-        <h2>3. Industry VS Graduated</h2>
+        <h2>3. Number of jobs available VS Graduated students</h2>
         <div id="step3bar"></div>
       </div>
     </div>
@@ -57,6 +60,7 @@
         <h2>4. The biggest companies you can rely on:</h2>
         <div class="columns">
           <div class="column is-5">
+            <p>The top companies that are biggest in Melbourne are:</p>
             <ol class="topcomp-list">
               <li>7-Eleven</li>
               <li>RMIT</li>
@@ -72,9 +76,31 @@
       </div>
     </div>
   </div>
+  <div class="section hero is-light">
+    <div class="container">
+      <div class="content">
+        <h2>Acknowledgements</h2>
+        <h3>Data Sources</h3>
+        <ul class="acknow">
+          <li><a href="http://highereducationstatistics.education.gov.au">uCube</a>, Department of Education and Training, Australian Government</li>
+          <li><a href="https://data.melbourne.vic.gov.au/clue">Census of Land Use and Employment (CLUE)</a>, City of Melbourne's Open Data Platform</li>
+          <li><a href="http://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/1292.0.55.002Main+Features12006?OpenDocument">Australian and New Zealand Standard Industrial Classification (ANZSIC)</a>, Australian Bureau of Statistics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer class="footer is-dark">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p><strong>Data Visualization of Melbourne Job Market</strong> by <a href="http://www.byperth.com">Woratana Ngarmtrakulchol</a></p>
+        <p>This project is for FIT5147 Data Visualization at Monash University, Australia.</p>
+        <p><a href="https://github.com/jgthms/bulma" class="icon"><i class="fa fa-github"></i></a></p>
+      </div>
+    </div>
+  </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
   <script src="js/data.js"></script>

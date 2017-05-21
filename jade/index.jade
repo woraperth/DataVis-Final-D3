@@ -11,22 +11,26 @@ head
     link(rel="stylesheet", href="https://api.mapbox.com/mapbox-gl-js/v0.35.1/mapbox-gl.css")
     link(rel="stylesheet", href="css/custom.css")
 body
-    .section
+    .section.hero.is-dark
       .container
         .content
-          h1 Job Market in Melbourne
-          h2 The story of job market in Melbourne
+          h1.title Job Market in Melbourne
+          h2.title The story of job market in Melbourne
     
     .section
       .container
         .content
           h2 1. Melbourne Job Map
+          p First, we will look at the number of employments and business establishments in Melbourne.
+          p It is not surprising to see that <b>Melbourne CBD</b> is the most crowded area for work. The second and third places are Docklands and Southbank, Respectively.
           
           .columns
             .column.is-5
               #choro
             .column.is-7
               #step1stack
+
+          p Next, we will explore which industry is the most popular in Melbourne.
             
     .section
       .container
@@ -37,7 +41,7 @@ body
     .section
       .container
         .content
-          h2 3. Industry VS Graduated
+          h2 3. Number of jobs available VS Graduated students
           #step3bar
     
     .section
@@ -46,6 +50,7 @@ body
           h2 4. The biggest companies you can rely on:
           .columns
             .column.is-5
+              p The top companies that are biggest in Melbourne are:
               ol.topcomp-list
                 li 7-Eleven
                 li RMIT
@@ -54,6 +59,35 @@ body
                 li McDonald
             .column.is-7
               #step4line
+
+    .section.hero.is-light
+      .container
+        .content
+          h2 Acknowledgements
+          h3 Data Sources
+          ul.acknow
+            li
+              a(href="http://highereducationstatistics.education.gov.au") uCube
+              | , Department of Education and Training, Australian Government
+            li
+              a(href="https://data.melbourne.vic.gov.au/clue") Census of Land Use and Employment (CLUE)
+              | , City of Melbourne's Open Data Platform
+            li
+              a(href="http://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/1292.0.55.002Main+Features12006?OpenDocument") Australian and New Zealand Standard Industrial Classification (ANZSIC)
+              | , Australian Bureau of Statistics
+
+    footer.footer.is-dark
+      .container
+        .content.has-text-centered
+          p
+            strong Data Visualization of Melbourne Job Market
+            |  by 
+            a(href='http://www.byperth.com') Woratana Ngarmtrakulchol
+          p This project is for FIT5147 Data Visualization at Monash University, Australia.
+          p
+            a.icon(href='https://github.com/jgthms/bulma')
+              i.fa.fa-github
+
               
 
 
@@ -127,7 +161,7 @@ body
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js")
     script(src="js/data.js")

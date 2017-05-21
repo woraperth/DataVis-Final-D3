@@ -81,3 +81,13 @@
   width: 100%;
   height: 300px;
 }
+
+.topcomp-list {
+  background: #FAFAFA;
+  padding: 10px 20px;
+  list-style-position: inside !important;
+}
+
+.acknow a {
+  text-decoration: underline;
+}
