@@ -14,7 +14,6 @@ var css = "",
 for (var i = 0; i < 6; i++) {
     css += ".topcomp-list li:nth-child(" + (i + 1) + ") { color: " + colorAry[i] + "; }";
 }
-console.log(css);
 
 style.type = "text/css";
 if (style.styleSheet) {
@@ -49,8 +48,6 @@ function createStackbar() {
     })]).range([0, hStack - botStack - topStack]);
 
     var estbar = svg.selectAll("rect").data(step1data);
-
-    var empbar = svg.selectAll("rect").data(step1data);
 
     var barWidth = (wStack - leftStack) / step1data.length - padStack;
 
@@ -97,6 +94,9 @@ function createStackbar() {
     var tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
     // Draw Graph
+    var empgroup = svg.append("g").attr("class", "empbar");
+    var empbar = svg.select(".empbar").selectAll("rect").data(step1data);
+
     empbar.enter().append("rect").attr("x", function (d, i) {
         return i * ((wStack - leftStack) / step1data.length) + leftStack;
     }).attr("y", hStack - botStack).attr("width", barWidth).attr("height", 0).attr("fill", empColor).attr("stroke", "#ADADAD").attr("opacity", 0.8).transition().duration(1000).attr("y", function (d, i) {
@@ -189,12 +189,37 @@ function createChoroMap() {
         doubleClickZoom: false,
         zoomControl: false,
         scrollWheelZoom: false
-    }).setView([-37.8154, 144.9437], 11.5);
+    }).setView([-37.8354, 144.9437], 11.5);
 
     L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
         attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>",
         maxZoom: 18
     }).addTo(openmap);
+
+    // Custom Legend
+
+    // Utility function from Elias Zamaria
+    // Referenece: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    var legend = L.control({ position: "bottomright" });
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create("div", "info legend"),
+            grades = [0, 40000, 80000, 120000, 160000, 200000],
+            labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML += "<i style=\"background:" + mycolor(Math.log(grades[i])) + "\"></i> " + numberWithCommas(grades[i]) + (grades[i + 1] ? "&ndash;" + numberWithCommas(grades[i + 1]) + "<br>" : "+");
+        }
+
+        return div;
+    };
+
+    legend.addTo(openmap);
 
     geojson = L.geoJson(melbarea, {
         style: openmapStyle,
@@ -210,18 +235,31 @@ function openmapOnEach(feature, layer) {
     });
 }
 
+var mycolor = chroma.scale(["#ece7f2", "#3E407A"]).domain([0, d3.max(step1data, function (d) {
+    return Math.log(d.total);
+})]);
+
 // Show highlighted color if it is the top 3 places
-function getColor(featurename) {
-    return "#666";
+function getColor(featurenick) {
+    var c = "#666";
+
+    for (var i = 0; i < step1data.length; i++) {
+        if (step1data[i].areanick == featurenick) {
+            c = mycolor(Math.floor(Math.log(step1data[i].total)));
+            break;
+        }
+    }
+
+    return c;
 }
 
 function openmapStyle(feature) {
     return {
-        fillColor: getColor(feature.properties.featurenam),
+        fillColor: getColor(feature.properties.nickname),
         weight: 2,
         color: "#666",
         dashArray: "",
-        fillOpacity: 0.7
+        fillOpacity: 0.9
     };
 }
 
@@ -244,9 +282,17 @@ function openmapMouseOver(e) {
     layer.openPopup();
 
     // Highlight Stack Bar Chart
-    // - TODO: Change 3 to the right number
-    d3.selectAll(".xaxeStack text").attr("fill", "#666");
-    d3.select(".xaxeStack g:nth-child(3) text").attr("fill", "#BB3C1C");
+    var labelBar = 0;
+    for (var i = 0; i < step1data.length; i++) {
+        if (step1data[i].areanick == layer.feature.properties.nickname) {
+            labelBar = i;
+            break;
+        }
+    }
+
+    d3.select(".xaxeStack g:nth-child(" + (labelBar + 1) + ") text").transition().attr("fill", "#BB3C1C");
+
+    d3.select(".empbar rect:nth-child(" + (labelBar + 1) + ")").transition().attr("fill", "#BB3C1C");
 }
 
 // Mouse Out
@@ -255,6 +301,10 @@ function openmapMouseOut(e) {
 
     // Close Popup
     layer.closePopup();
+
+    d3.selectAll(".xaxeStack text").transition().attr("fill", "#666");
+
+    d3.selectAll(".empbar rect").transition().attr("fill", "#D1D1D1");
 }
 
 /*
