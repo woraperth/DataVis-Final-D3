@@ -2,7 +2,7 @@
 // Source: https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.js
 "use strict";
 
-var colorAry = ["#b22200", "#282F6B", "#b39600", "#B35C1E", "#224F20", "#5F487C", "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8", "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"];
+var colorAry = ["#b22200", "#282F6B", "#b39600", "#224F20", "#993F88", "#5F487C", "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8", "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"];
 var colorList = d3.scale.ordinal().range(colorAry);
 // How to use: colorList(cat_id) e.g. colorList(1) to colorList(19)
 
@@ -11,6 +11,7 @@ var css = "",
     head = document.head || document.getElementsByTagName("head")[0],
     style = document.createElement("style");
 
+// Generate dynamic text color for section 4
 for (var i = 0; i < 6; i++) {
     css += ".topcomp-list li:nth-child(" + (i + 1) + ") { color: " + colorAry[i] + "; }";
 }
@@ -387,7 +388,7 @@ function createCompBar() {
 */
 function createLinePlot() {
 
-    var attributes = [{ "name": "7-Eleven", "hex": colorList(1) }, { "name": "RMIT", "hex": colorList(2) }, { "name": "Subway", "hex": colorList(3) }, { "name": "Telstra", "hex": colorList(4) }, { "name": "Wilson Parking", "hex": colorList(5) }];
+    var attributes = [{ "name": "7-Eleven", "hex": colorAry[0] }, { "name": "RMIT", "hex": colorAry[1] }, { "name": "Subway", "hex": colorAry[2] }, { "name": "Telstra", "hex": colorAry[3] }, { "name": "Wilson Parking", "hex": colorAry[4] }];
 
     var visualization = d3plus.viz().container("#step4line") // container DIV to hold the visualization
     .data(step4data) // data to use with the visualization
@@ -396,8 +397,36 @@ function createLinePlot() {
     .text("name") // key to use for display text
     .y({ "value": "value", "label": "Number of blocks" }) // key to use for y-axis
     .x("year") // key to use for x-axis
-    .attrs(attributes).color("hex").legend({ filters: true }).font({ "size": 16, "weight": 400 }).draw() // finally, draw the visualization!
-    ;
+    .attrs(attributes).color("hex").legend({ filters: true }).font({ "size": 16, "weight": 400 }).draw(); // finally, draw the visualization!
+
+    // Hover name & highlight line
+    var st4TopElem = document.querySelectorAll(".topcomp-list li");
+    for (var i = 0; i < st4TopElem.length; i++) {
+        var thisEle = st4TopElem[i];
+
+        // When hover
+        thisEle.addEventListener("mouseover", function (e) {
+            var thisName = e.target.innerHTML;
+            var thisLineID = "d3plus_group_nesting_" + thisName.replace(/ /g, "_");
+            e.target.className = "st4-highlight";
+
+            var allLines = d3.select("#step4line svg").selectAll("g.d3plus_line");
+            for (var j = 0; j < allLines[0].length; j++) {
+                // Hide if it is not the focused line
+                if (allLines[0][j].id != thisLineID) {
+                    d3.select("#" + allLines[0][j].id).attr("opacity", 0.2);
+                }
+            }
+        });
+
+        // When mouse out
+        thisEle.addEventListener("mouseout", function (e) {
+            // Clear class
+            e.target.className = "";
+            // Show all lines
+            var allLines = d3.select("#step4line svg").selectAll("g.d3plus_line").attr("opacity", 1);
+        });
+    }
 }
 
 // Start map

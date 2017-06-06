@@ -26,6 +26,19 @@ hr.divider {
     color: #ccc;
 }
 
+#d3plus_back_button {
+    border: 1px solid #D1D1D1;
+    border-radius: 3px;
+    padding: 5px;
+    background: #fff;
+}
+
+.d3plus_line {
+    stroke-width: 2px !important;
+}
+
+
+
 // Step 1 Choropleth
 #choro {
     width: 100%;
@@ -58,6 +71,13 @@ hr.divider {
         opacity: 0.7;
     }
 }
+
+.fa {
+    vertical-align: middle;
+}
+
+
+
 
 // Step 1 Stack Bar
 #step1stack {
@@ -116,6 +136,8 @@ hr.divider {
     padding: 10px;
 }
 
+
+
 // Step 1 Control
 .step1-control {
     a {
@@ -157,9 +179,21 @@ hr.divider {
     padding: 10px 20px;
     list-style-position: inside !important;
 
+    li {
+        transition: 0.3s;
+    }
+
     li:nth-child(1) {
         font-size: 1.5em;
     }
+}
+
+.st4-highlight {
+    background: rgba(0,0,0,0.1);
+}
+
+.hide-line {
+    display: none;
 }
 
 
