@@ -116,6 +116,15 @@ hr.divider {
     padding: 10px;
 }
 
+// Step 1 Control
+.step1-control {
+    a {
+        text-decoration: underline;
+        font-size: 0.8em;
+        color: #666;
+    }
+}
+
 
 // Step 2 Tree
 #step2tree {

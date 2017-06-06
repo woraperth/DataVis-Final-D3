@@ -23,6 +23,9 @@ if (style.styleSheet) {
 }
 head.appendChild(style);
 
+// Initialize variables
+var showCBD = true;
+
 // Utility function from Elias Zamaria
 // Referenece: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 function numberWithCommas(x) {
@@ -33,6 +36,19 @@ function numberWithCommas(x) {
 * STEP 1
 */
 
+// Show / hide CBD when clicked
+document.getElementById("showHideCBD").addEventListener("click", function (e) {
+    // Toggle show CBD
+    showCBD = !showCBD;
+    // Clear bar chart
+    document.getElementById("step1stack").innerHTML = "";
+    // Rerender bar chart
+    createStackbar();
+    // Stop page from jumping
+    e.preventDefault();
+});
+
+// Create stack bar chart
 function createStackbar() {
     var wStack = d3.select("#step1stack").node().getBoundingClientRect().width;
     var hStack = 600;
@@ -47,19 +63,28 @@ function createStackbar() {
     var empColor = "#D1D1D1";
     var busColor = "#666";
 
+    // Check show/hide CBD
+    if (showCBD) {
+        var step1data_data = step1data;
+    } else {
+        // Hide CBD
+        var step1data_data = step1data.slice();
+        step1data_data.shift();
+    }
+
     // Add stacked bar chart
-    var l_converter = d3.scale.linear().domain([0, d3.max(step1data, function (d) {
+    var l_converter = d3.scale.linear().domain([0, d3.max(step1data_data, function (d) {
         return d.total;
     })]).range([0, hStack - botStack - topStack]);
 
-    var barWidth = (wStack - leftStack) / step1data.length - padStack;
+    var barWidth = (wStack - leftStack) / step1data_data.length - padStack;
 
     // Add axis
-    var xScale = d3.scale.ordinal().domain(d3.map(step1data, function (d) {
+    var xScale = d3.scale.ordinal().domain(d3.map(step1data_data, function (d) {
         return d.areaname;
     }).keys()).rangePoints([0, wStack - leftStack - barWidth]);
 
-    var yScale = d3.scale.linear().domain([1, d3.max(step1data, function (d) {
+    var yScale = d3.scale.linear().domain([1, d3.max(step1data_data, function (d) {
         return d.total;
     })]).range([hStack, botStack + topStack]);
 
@@ -98,23 +123,23 @@ function createStackbar() {
 
     // Draw Graph
     var empgroup = svg.append("g").attr("class", "empbar");
-    var empbar = svg.select(".empbar").selectAll("rect").data(step1data);
+    var empbar = svg.select(".empbar").selectAll("rect").data(step1data_data);
     var estgroup = svg.append("g").attr("class", "estbar");
-    var estbar = svg.select(".estbar").selectAll("rect").data(step1data);
+    var estbar = svg.select(".estbar").selectAll("rect").data(step1data_data);
 
     empbar.enter().append("rect").attr("x", function (d, i) {
-        return i * ((wStack - leftStack) / step1data.length) + leftStack;
-    }).attr("y", hStack - botStack).attr("width", barWidth).attr("height", 0).attr("fill", empColor).attr("stroke", "#ADADAD").attr("opacity", 0.8).transition().duration(1000).attr("y", function (d, i) {
+        return i * ((wStack - leftStack) / step1data_data.length) + leftStack;
+    }).attr("y", hStack - botStack).attr("width", barWidth).attr("height", 0).attr("fill", empColor).attr("stroke", "#ADADAD").attr("opacity", 0.8).transition("empenter").duration(1000).attr("y", function (d, i) {
         return hStack - l_converter(d.emp) - botStack;
     }).attr("height", function (d, i) {
         return l_converter(d.emp);
     });
 
     estbar.enter().append("rect").attr("x", function (d, i) {
-        return i * ((wStack - leftStack) / step1data.length) + leftStack;
+        return i * ((wStack - leftStack) / step1data_data.length) + leftStack;
     }).attr("y", function (d, i) {
         return hStack - l_converter(d.emp) - botStack;
-    }).attr("width", barWidth).attr("height", 0).attr("fill", busColor).attr("stroke", "#ADADAD").attr("opacity", 0.8).transition().duration(500).delay(1000).attr("y", function (d, i) {
+    }).attr("width", barWidth).attr("height", 0).attr("fill", busColor).attr("stroke", "#ADADAD").attr("opacity", 0.8).transition("estenter").duration(500).delay(1000).attr("y", function (d, i) {
         return hStack - l_converter(d.emp) - l_converter(d.bus) - botStack;
     }).attr("height", function (d, i) {
         return l_converter(d.bus);
@@ -123,7 +148,7 @@ function createStackbar() {
     // Add mouse interactions
     var step1mover = function step1mover(d) {
         // Show tooltip		
-        tooltip.transition().duration(200).style("opacity", .9);
+        tooltip.transition("st1tooltip").duration(200).style("opacity", .9);
         // Set data in tooltip	
         tooltip.html("Employment: " + numberWithCommas(d.emp)).style("left", function () {
             return d3.event.pageX + "px";
@@ -136,7 +161,7 @@ function createStackbar() {
 
     var step1moverBus = function step1moverBus(d) {
         // Show tooltip		
-        tooltip.transition().duration(200).style("opacity", .9);
+        tooltip.transition("st1movebus").duration(200).style("opacity", .9);
         // Set data in tooltip	
         tooltip.html("Business: " + numberWithCommas(d.bus)).style("left", function () {
             return d3.event.pageX + "px";
@@ -149,7 +174,7 @@ function createStackbar() {
 
     var step1mout = function step1mout(d) {
         // Hide tooltip
-        tooltip.transition().duration(500).style("opacity", 0);
+        tooltip.transition("st1mout").duration(500).style("opacity", 0);
         // Cancel highlight
         d3.select(this).attr("opacity", 0.8);
     };
@@ -238,7 +263,7 @@ var mycolor = chroma.scale(["#F5D76E", "#D35400"]).domain([0, d3.max(step1data, 
     return Math.log(d.total);
 })]);
 
-// Show highlighted color if it is the top 3 places
+// Show highlighted color
 function getColor(featurenick) {
     var c = "#666";
 
@@ -262,6 +287,7 @@ function openmapStyle(feature) {
     };
 }
 
+// When hovering on map
 function openmapMouseOver(e) {
     layer = e.target;
 
@@ -281,17 +307,27 @@ function openmapMouseOver(e) {
     layer.openPopup();
 
     // Highlight Stack Bar Chart
-    var labelBar = 0;
-    for (var i = 0; i < step1data.length; i++) {
-        if (step1data[i].areanick == layer.feature.properties.nickname) {
+
+    // - Based on showing / hiding CBD
+    if (showCBD) {
+        var step1data_data = step1data;
+    } else {
+        // Hide CBD
+        var step1data_data = step1data.slice();
+        step1data_data.shift();
+    }
+
+    var labelBar = -1;
+    for (var i = 0; i < step1data_data.length; i++) {
+        if (step1data_data[i].areanick == layer.feature.properties.nickname) {
             labelBar = i;
             break;
         }
     }
 
-    d3.select(".xaxeStack g:nth-child(" + (labelBar + 1) + ") text").transition().attr("fill", "#BB3C1C");
+    d3.select(".xaxeStack g:nth-child(" + (labelBar + 1) + ") text").transition("hoverx").attr("fill", "#BB3C1C");
 
-    d3.selectAll(".empbar rect:nth-child(" + (labelBar + 1) + "), .estbar rect:nth-child(" + (labelBar + 1) + ")").transition().attr("fill", "#BB3C1C");
+    d3.selectAll(".empbar rect:nth-child(" + (labelBar + 1) + "), .estbar rect:nth-child(" + (labelBar + 1) + ")").transition("hovery").attr("fill", "#BB3C1C");
 }
 
 // Mouse Out
@@ -301,11 +337,11 @@ function openmapMouseOut(e) {
     // Close Popup
     layer.closePopup();
 
-    d3.selectAll(".xaxeStack text").transition().attr("fill", "#666");
+    d3.selectAll(".xaxeStack text").transition("outx").attr("fill", "#666");
 
-    d3.selectAll(".empbar rect").transition().attr("fill", "#D1D1D1");
+    d3.selectAll(".empbar rect").transition("outemp").attr("fill", "#D1D1D1");
 
-    d3.selectAll(".estbar rect").transition().attr("fill", "#666");
+    d3.selectAll(".estbar rect").transition("outest").attr("fill", "#666");
 }
 
 /*
