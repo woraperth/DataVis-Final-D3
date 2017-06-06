@@ -234,7 +234,7 @@ function openmapOnEach(feature, layer) {
     });
 }
 
-var mycolor = chroma.scale(["#ece7f2", "#3E407A"]).domain([0, d3.max(step1data, function (d) {
+var mycolor = chroma.scale(["#F5D76E", "#D35400"]).domain([0, d3.max(step1data, function (d) {
     return Math.log(d.total);
 })]);
 
@@ -258,7 +258,7 @@ function openmapStyle(feature) {
         weight: 2,
         color: "#666",
         dashArray: "",
-        fillOpacity: 0.9
+        fillOpacity: 1
     };
 }
 

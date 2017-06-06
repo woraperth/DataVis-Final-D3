@@ -165,7 +165,7 @@ function createStackbar() {
             .attr("y", function(d, i) { return hStack - l_converter(d.emp) - l_converter(d.bus) - botStack })
             .attr("height", function(d, i) { return l_converter(d.bus) } )
 
-      // Add mouse interactions
+    // Add mouse interactions
     var step1mover = function(d) {
         // Show tooltip		
         tooltip.transition()
@@ -191,6 +191,7 @@ function createStackbar() {
         // Highlight the current link
         d3.select(this).attr("opacity", 1);
     }
+    
     
     var step1mout = function(d) {
         // Hide tooltip
@@ -309,7 +310,7 @@ function openmapOnEach(feature, layer) {
     });
 }
 
-var mycolor = chroma.scale(['#ece7f2', '#3E407A'])
+var mycolor = chroma.scale(['#F5D76E', '#D35400'])
     .domain([0 , d3.max(step1data, function(d) { return Math.log(d.total); })]);
 
 // Show highlighted color if it is the top 3 places
@@ -332,7 +333,7 @@ function openmapStyle(feature) {
         weight: 2,
         color: '#666',
         dashArray: '',
-        fillOpacity: 0.9
+        fillOpacity: 1
     }
 }
 

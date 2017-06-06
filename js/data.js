@@ -6,97 +6,97 @@ var melbarea = {
 };
 
 var step1data = [
-    {
-    "areaname": "Carlton",
-    "bus": 1128,
-    "emp": 10254,
-    "areanick": "CARL",
-    "total": 11382
-    },
-    {
-    "areaname": "Docklands",
-    "bus": 997,
-    "emp": 40224,
-    "areanick": "DOCK",
-    "total": 41221
-    },
-    {
-    "areaname": "East Melbourne",
-    "bus": 589,
-    "emp": 17119,
-    "areanick": "EAST",
-    "total": 17708
-    },
-    {
-    "areaname": "Kensington",
-    "bus": 471,
-    "emp": 5181,
-    "areanick": "KENG",
-    "total": 5652
-    },
-    {
+  {
     "areaname": "Melbourne (CBD)",
     "bus": 9101,
     "emp": 172686,
     "areanick": "MCBD",
     "total": 181787
-    },
-    {
-    "areaname": "Melbourne (Remainder)",
-    "bus": 420,
-    "emp": 23674,
-    "areanick": "REM",
-    "total": 24094
-    },
-    {
-    "areaname": "North Melbourne",
-    "bus": 1027,
-    "emp": 4900,
-    "areanick": "NORT",
-    "total": 5927
-    },
-    {
-    "areaname": "Parkville",
-    "bus": 304,
-    "emp": 12470,
-    "areanick": "PARK",
-    "total": 12774
-    },
-    {
-    "areaname": "Port Melbourne",
-    "bus": 511,
-    "emp": 9625,
-    "areanick": "PORT",
-    "total": 10136
-    },
-    {
-    "areaname": "South Yarra",
-    "bus": 54,
-    "emp": 164,
-    "areanick": "SOUY",
-    "total": 218
-    },
-    {
+  },
+  {
+    "areaname": "Docklands",
+    "bus": 997,
+    "emp": 40224,
+    "areanick": "DOCK",
+    "total": 41221
+  },
+  {
     "areaname": "Southbank",
     "bus": 939,
     "emp": 24318,
     "areanick": "SOUB",
     "total": 25257
-    },
-    {
+  },
+  {
+    "areaname": "Melbourne (Remainder)",
+    "bus": 420,
+    "emp": 23674,
+    "areanick": "REM",
+    "total": 24094
+  },
+  {
+    "areaname": "East Melbourne",
+    "bus": 589,
+    "emp": 17119,
+    "areanick": "EAST",
+    "total": 17708
+  },
+  {
+    "areaname": "Parkville",
+    "bus": 304,
+    "emp": 12470,
+    "areanick": "PARK",
+    "total": 12774
+  },
+  {
+    "areaname": "Carlton",
+    "bus": 1128,
+    "emp": 10254,
+    "areanick": "CARL",
+    "total": 11382
+  },
+  {
+    "areaname": "Port Melbourne",
+    "bus": 511,
+    "emp": 9625,
+    "areanick": "PORT",
+    "total": 10136
+  },
+  {
     "areaname": "West Melbourne (Industrial)",
     "bus": 350,
     "emp": 8013,
     "areanick": "WESI",
     "total": 8363
-    },
-    {
+  },
+  {
+    "areaname": "North Melbourne",
+    "bus": 1027,
+    "emp": 4900,
+    "areanick": "NORT",
+    "total": 5927
+  },
+  {
+    "areaname": "Kensington",
+    "bus": 471,
+    "emp": 5181,
+    "areanick": "KENG",
+    "total": 5652
+  },
+  {
     "areaname": "West Melbourne (Residential)",
     "bus": 452,
     "emp": 2066,
     "areanick": "WESR",
     "total": 2518
-    }
+  },
+  {
+    "areaname": "South Yarra",
+    "bus": 54,
+    "emp": 164,
+    "areanick": "SOUY",
+    "total": 218
+  }
 ];
 
 var step2data = [
