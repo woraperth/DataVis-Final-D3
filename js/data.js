@@ -1,4 +1,8 @@
-// Melbourne Block
+/**
+ * This file is the JSON data for all the plots, generated from R.
+ * The code to generate all data are in `prepareForViz.R`
+ */
+
 var melbarea = {
     "type": "FeatureCollection",
     "features": [

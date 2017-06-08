@@ -1,3 +1,11 @@
+/**
+ * How the code is organized in this CSS file:
+ * > Common CSS
+ * > Header & Footer CSS
+ * > CSS for step 1 - 4 plots
+ */
+
+
 // WARNING: Don't use svg { width: 100%; }
 // to style D3 SVG.
 // Because it will affect leaftlet as well !
@@ -36,6 +44,17 @@ hr.divider {
 .d3plus_line {
     stroke-width: 2px !important;
 }
+
+
+
+
+// Header & Footer
+.acknow {
+    a {
+        text-decoration: underline;
+    }
+}
+
 
 
 
@@ -194,12 +213,4 @@ hr.divider {
 
 .hide-line {
     display: none;
-}
-
-
-// Footer
-.acknow {
-    a {
-        text-decoration: underline;
-    }
 }

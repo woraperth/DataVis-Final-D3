@@ -1,3 +1,9 @@
+/**
+ * How the code is organized in this CSS file:
+ * > Common CSS
+ * > Header & Footer CSS
+ * > CSS for step 1 - 4 plots
+ */
 body {
   font-family: 'Open Sans', sans-serif;
 }
@@ -30,6 +36,10 @@ hr.divider {
 
 .d3plus_line {
   stroke-width: 2px !important;
+}
+
+.acknow a {
+  text-decoration: underline;
 }
 
 #choro {
@@ -170,8 +180,4 @@ hr.divider {
 
 .hide-line {
   display: none;
-}
-
-.acknow a {
-  text-decoration: underline;
 }

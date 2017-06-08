@@ -1,19 +1,25 @@
-// D3Plus Scale
+/**
+ * How the code is organized in this JavaScript file:
+ * > Initialize variables & utility functions
+ * > Code for generating plots in step 1 - 4 (refer to the narrative steps)
+ * > Initialize all plots
+ */
+
+
+// > Initialize variables & Utility Functions
+
+// D3Plus Scale Colors
 // Source: https://cdnjs.cloudflare.com/ajax/libs/d3plus/1.9.8/d3plus.full.js
 var colorAry = ["#b22200", "#282F6B", "#b39600",  "#224F20", "#993F88", "#5F487C", "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8", "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"];
-var colorList = d3.scale.ordinal().range( colorAry );
-// How to use: colorList(cat_id) e.g. colorList(1) to colorList(19)
 
-// Add D3 Plus Scale Color to CSS
+// Add D3 Plus Scale Colors to CSS
+// Generate dynamic CSS for section 4
 var css = '',
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
-    
-// Generate dynamic text color for section 4
 for(var i = 0; i < 6; i++) {
     css += '.topcomp-list li:nth-child(' + (i + 1) + ') { color: ' + colorAry[i] + '; }';
 }
-
 style.type = 'text/css';
 if (style.styleSheet){
     style.styleSheet.cssText = css;
@@ -571,6 +577,7 @@ function createLinePlot() {
         // When hover
         thisEle.addEventListener('mouseover', function(e) {
             var thisName = e.target.innerHTML;
+            // Replace space with underscore
             var thisLineID = 'd3plus_group_nesting_' + thisName.replace(/ /g,"_");
             e.target.className = 'st4-highlight';
 
@@ -578,7 +585,7 @@ function createLinePlot() {
             for(var j = 0; j < allLines[0].length; j++) {
                 // Hide if it is not the focused line
                 if( allLines[0][j].id != thisLineID) {
-                    d3.select('#' + allLines[0][j].id).attr('opacity', 0.2)
+                    d3.select('#' + allLines[0][j].id).attr('opacity', 0.15)
                 }
             }  
         });
@@ -595,7 +602,7 @@ function createLinePlot() {
 
 
 
-// Start map
+// > Initialize all plots
 // Step 1
 createChoroMap();
 createStackbar();
